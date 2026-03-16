@@ -1,0 +1,1405 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Subitan Seka — Strategic Support Executive</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <style>
+    /* =========================================================
+       GLOBAL STYLES & DESIGN TOKENS
+       ========================================================= */
+    :root{
+      --bg0:#050712;
+      --bg1:#050816;
+      --panel:rgba(15,23,42,.82);
+      --panel-softer:rgba(15,23,42,.70);
+      --panel-soft:rgba(15,23,42,.60);
+      --border-soft:rgba(148,163,184,.35);
+      --border-strong:rgba(96,165,250,.65);
+
+      --accent:#3B82F6;
+      --accent-soft:#60A5FA;
+      --accent-strong:#2563EB;
+      --accent-glow:rgba(59,130,246,.6);
+      --accent2:#38BDF8;
+      --accent3:#22C55E;
+
+      --text:#E5EDFF;
+      --muted:#9CA3AF;
+      --muted2:#6B7280;
+
+      --danger:#F97373;
+      --danger-soft:#F97373;
+      --radius-xl:22px;
+      --radius-lg:18px;
+      --radius-md:14px;
+      --radius-sm:10px;
+
+      --shadow-strong:0 22px 70px rgba(0,0,0,.75);
+      --shadow-soft:0 14px 40px rgba(15,23,42,.9);
+      --ring:0 0 0 2px rgba(59,130,246,.55);
+
+      --sans: system-ui,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1100px 700px at 5% 0%,rgba(37,99,235,.55),transparent 65%),
+        radial-gradient(1200px 820px at 95% 0%,rgba(8,47,73,.9),transparent 65%),
+        radial-gradient(900px 550px at 50% 100%,rgba(16,185,129,.18),transparent 70%),
+        linear-gradient(160deg,#020617,#020617 30%,#020617 60%,#020617 100%);
+      overflow-x:hidden;
+      color-scheme:dark;
+    }
+
+    ::selection{
+      background:rgba(59,130,246,.5);
+      color:#F9FAFB;
+    }
+
+    a{color:inherit;text-decoration:none;}
+    button,textarea{font:inherit;}
+
+    /* Animated grain overlay for subtle texture */
+    .grain{
+      position:fixed;
+      inset:-150px;
+      pointer-events:none;
+      opacity:.18;
+      mix-blend-mode:soft-light;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.8'/%3E%3C/svg%3E");
+      animation:grainMove 22s linear infinite;
+    }
+    @keyframes grainMove{
+      0%{transform:translate3d(-10px,-10px,0);}
+      50%{transform:translate3d(10px,0,0);}
+      100%{transform:translate3d(-10px,-10px,0);}
+    }
+
+    /* =========================================================
+       LAYOUT
+       ========================================================= */
+    .app-shell{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:clamp(16px,3vw,32px);
+    }
+
+    .app{
+      width:min(1040px,100%);
+      display:grid;
+      gap:16px;
+    }
+
+    /* =========================================================
+       HEADER / BOT CARD
+       ========================================================= */
+    .header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 16px;
+      border-radius:var(--radius-lg);
+      background:
+        linear-gradient(140deg,rgba(15,23,42,.96),rgba(15,23,42,.94)),
+        radial-gradient(circle at 0% 0%,rgba(37,99,235,.7),transparent 55%);
+      border:1px solid rgba(148,163,184,.45);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      position:relative;
+      overflow:hidden;
+    }
+    .header::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:
+        radial-gradient(260px 200px at 0% 0%,rgba(56,189,248,.35),transparent 70%),
+        radial-gradient(220px 160px at 100% 0%,rgba(37,99,235,.6),transparent 70%);
+      opacity:.55;
+      mix-blend-mode:screen;
+      pointer-events:none;
+      filter:blur(12px);
+    }
+
+    .header-left{
+      position:relative;
+      z-index:1;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .title-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title{
+      margin:0;
+      font-size:clamp(20px,3vw,26px);
+      font-weight:700;
+      letter-spacing:-0.03em;
+      white-space:nowrap;
+    }
+    .role{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .status-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+    .badge-online{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(52,211,153,.55);
+      background:rgba(6,95,70,.7);
+      box-shadow:0 0 0 1px rgba(15,23,42,.8),0 10px 18px rgba(6,95,70,.75);
+      font-size:12px;
+    }
+    .badge-dot{
+      width:9px;
+      height:9px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#4ADE80,#22C55E);
+      box-shadow:0 0 0 3px rgba(16,185,129,.45),0 0 16px rgba(34,197,94,.75);
+    }
+    .badge-online span{
+      font-weight:500;
+    }
+    .tag-id{
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--muted2);
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.5);
+      padding:3px 8px;
+      background:rgba(15,23,42,.8);
+    }
+
+    .subtitle{
+      position:relative;
+      z-index:1;
+      margin:4px 0 0;
+      font-size:13px;
+      color:var(--muted);
+      max-width:460px;
+    }
+
+    .header-right{
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .avatar-card{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.55);
+      background:radial-gradient(circle at 0% 0%,rgba(56,189,248,.6),transparent 60%),rgba(15,23,42,.9);
+      box-shadow:0 12px 26px rgba(15,23,42,.95);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      min-width:0;
+    }
+    .avatar-circle{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:2px solid rgba(191,219,254,.9);
+      background:
+        radial-gradient(circle at 30% 0%,rgba(248,250,252,.85),transparent 60%),
+        radial-gradient(circle at 70% 120%,rgba(59,130,246,.9),transparent 70%),
+        linear-gradient(140deg,#020617,#0B1120);
+      box-shadow:0 0 0 3px rgba(15,23,42,1),0 12px 22px rgba(15,23,42,.95);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+    .avatar-info{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      min-width:0;
+    }
+    .avatar-name{
+      font-size:13px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .avatar-note{
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .btn-ghost{
+      border-radius:var(--radius-md);
+      border:1px solid rgba(148,163,184,.6);
+      background:rgba(15,23,42,.85);
+      color:var(--text);
+      padding:8px 11px;
+      font-size:12px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      transition:transform .08s ease,border-color .15s ease,background .15s ease,box-shadow .12s ease;
+      box-shadow:0 10px 22px rgba(15,23,42,.95);
+      white-space:nowrap;
+    }
+    .btn-ghost:hover{
+      transform:translateY(-1px);
+      border-color:rgba(248,250,252,.9);
+      background:rgba(15,23,42,.98);
+      box-shadow:0 18px 40px rgba(15,23,42,1);
+    }
+    .btn-ghost:active{transform:translateY(0);}
+    .btn-ghost:focus-visible{outline:none;box-shadow:var(--ring);}
+
+    /* =========================================================
+       MAIN PANEL & CONTENT
+       ========================================================= */
+    .panel{
+      border-radius:var(--radius-xl);
+      background:linear-gradient(160deg,rgba(15,23,42,.96),rgba(15,23,42,.92));
+      border:1px solid rgba(148,163,184,.4);
+      box-shadow:var(--shadow-strong);
+      backdrop-filter:blur(22px);
+      -webkit-backdrop-filter:blur(22px);
+      overflow:hidden;
+      position:relative;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(260px 240px at 0% 0%,rgba(56,189,248,.35),transparent 70%),
+        radial-gradient(260px 260px at 100% 20%,rgba(59,130,246,.45),transparent 70%),
+        radial-gradient(320px 280px at 50% 120%,rgba(16,185,129,.25),transparent 70%);
+      mix-blend-mode:screen;
+      opacity:.6;
+      pointer-events:none;
+      filter:blur(18px);
+    }
+
+    .panel-inner{
+      position:relative;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:min(75vh,760px);
+    }
+
+    /* =========================================================
+       NOTICE / SATIRE BOX
+       ========================================================= */
+    .notice{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:var(--radius-md);
+      background:rgba(15,23,42,.98);
+      border:1px solid rgba(148,163,184,.45);
+      box-shadow:0 10px 22px rgba(15,23,42,.95);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .notice-icon{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:1px solid rgba(56,189,248,.7);
+      background:radial-gradient(circle at 0% 0%,rgba(56,189,248,.7),transparent 60%),rgba(15,23,42,1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:var(--mono);
+      font-size:12px;
+      color:#E0F2FE;
+      box-shadow:0 10px 22px rgba(15,23,42,.95);
+      flex-shrink:0;
+    }
+    .notice strong{color:#E5EDFF;font-weight:600;}
+
+    /* =========================================================
+       QUICK SUGGESTION CHIPS
+       ========================================================= */
+    .quick-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:2px;
+    }
+    .chip{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.6);
+      background:rgba(15,23,42,.96);
+      color:var(--text);
+      font-size:12px;
+      padding:6px 9px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      cursor:pointer;
+      transition:transform .08s ease,border-color .15s ease,background .15s ease,box-shadow .12s ease;
+      box-shadow:0 10px 20px rgba(15,23,42,.9);
+      max-width:100%;
+    }
+    .chip:hover{
+      transform:translateY(-1px);
+      border-color:rgba(59,130,246,.75);
+      background:linear-gradient(135deg,rgba(15,23,42,1),rgba(15,23,42,.96));
+      box-shadow:0 14px 30px rgba(15,23,42,1);
+    }
+    .chip:active{transform:translateY(0);}
+    .chip-label{
+      white-space:nowrap;
+    }
+
+    /* =========================================================
+       CHAT AREA
+       ========================================================= */
+    .chat{
+      flex:1 1 auto;
+      border-radius:var(--radius-lg);
+      background:var(--panel);
+      border:1px solid rgba(148,163,184,.45);
+      box-shadow:0 14px 40px rgba(15,23,42,1);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      min-height:340px;
+    }
+    .chat-scroll{
+      flex:1 1 auto;
+      overflow:auto;
+      padding:14px;
+      scroll-behavior:smooth;
+    }
+    .messages{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding-bottom:6px;
+    }
+
+    /* custom scrollbar (webkit-based) */
+    .chat-scroll::-webkit-scrollbar{width:10px;}
+    .chat-scroll::-webkit-scrollbar-thumb{
+      background:rgba(75,85,99,.85);
+      border-radius:999px;
+      border:2px solid rgba(15,23,42,.9);
+    }
+    .chat-scroll::-webkit-scrollbar-thumb:hover{
+      background:rgba(148,163,184,1);
+    }
+
+    .empty-state{
+      margin:18px auto 8px;
+      padding:14px 12px;
+      border-radius:var(--radius-md);
+      border:1px dashed rgba(148,163,184,.6);
+      background:rgba(15,23,42,.95);
+      box-shadow:0 14px 26px rgba(15,23,42,1);
+      max-width:680px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .empty-state h2{
+      margin:0 0 6px;
+      font-size:14px;
+      color:var(--text);
+    }
+    .empty-state p{margin:2px 0;}
+    .kbd{
+      display:inline-block;
+      font-family:var(--mono);
+      font-size:11px;
+      padding:2px 5px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.65);
+      background:rgba(15,23,42,.98);
+      color:#E5EDFF;
+    }
+
+    /* message rows */
+    .row{
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+    }
+    .row.user{justify-content:flex-end;}
+    .row.bot{justify-content:flex-start;}
+
+    .avatar-bubble{
+      width:30px;
+      height:30px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.75);
+      background:radial-gradient(circle at 0% 0%,rgba(191,219,254,.95),transparent 60%),rgba(15,23,42,1);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:700;
+      color:var(--accent-strong);
+      box-shadow:0 12px 24px rgba(15,23,42,1);
+      flex-shrink:0;
+    }
+    .avatar-bubble.user{
+      background:radial-gradient(circle at 20% 0%,rgba(96,165,250,.85),transparent 60%),rgba(15,23,42,1);
+      color:#E5EDFF;
+      border-color:rgba(129,140,248,.9);
+    }
+
+    .bubble{
+      max-width:min(78%,720px);
+      padding:9px 11px;
+      border-radius:16px;
+      border:1px solid rgba(148,163,184,.7);
+      background:radial-gradient(circle at 0% 0%,rgba(59,130,246,.22),transparent 70%),rgba(15,23,42,.96);
+      box-shadow:0 18px 36px rgba(15,23,42,1);
+      font-size:13px;
+      line-height:1.45;
+      white-space:pre-wrap;
+      word-wrap:break-word;
+      position:relative;
+      overflow:hidden;
+    }
+    .bubble.user{
+      border-radius:16px 4px 16px 16px;
+      border-color:rgba(59,130,246,.95);
+      background:radial-gradient(circle at 100% 0%,rgba(37,99,235,.55),transparent 65%),rgba(15,23,42,1);
+    }
+    .bubble.bot{
+      border-radius:4px 16px 16px 16px;
+    }
+
+    .meta{
+      margin-top:4px;
+      font-size:11px;
+      color:var(--muted2);
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .meta-tag{
+      font-family:var(--mono);
+      font-size:11px;
+      padding:1px 6px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.7);
+      background:rgba(15,23,42,.95);
+      color:var(--muted);
+    }
+
+    /* typing indicator */
+    .typing-inner{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .typing-dots{
+      display:inline-flex;
+      gap:4px;
+    }
+    .typing-dots span{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(209,213,219,.9);
+      opacity:.5;
+      animation:bounce 1.1s infinite ease-in-out;
+    }
+    .typing-dots span:nth-child(2){animation-delay:.15s;}
+    .typing-dots span:nth-child(3){animation-delay:.3s;}
+
+    @keyframes bounce{
+      0%,80%,100%{transform:translateY(0);opacity:.5;}
+      40%{transform:translateY(-4px);opacity:1;}
+    }
+
+    /* =========================================================
+       COMPOSER
+       ========================================================= */
+    .composer{
+      margin-top:10px;
+      padding:11px 12px;
+      border-radius:var(--radius-lg);
+      border:1px solid rgba(148,163,184,.55);
+      background:var(--panel-soft);
+      box-shadow:0 14px 36px rgba(15,23,42,1);
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .composer-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      font-size:11px;
+      color:var(--muted2);
+    }
+    .composer-top-left{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .pill{
+      font-family:var(--mono);
+      font-size:11px;
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,.65);
+      background:rgba(15,23,42,.98);
+      color:#E5EDFF;
+    }
+
+    /* API info (purely informational, always uses API if Key vorhanden) */
+    .api-info{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .composer-main{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+      align-items:end;
+    }
+
+    textarea{
+      width:100%;
+      min-height:46px;
+      max-height:150px;
+      resize:none;
+      padding:9px 10px;
+      border-radius:var(--radius-md);
+      border:1px solid rgba(148,163,184,.65);
+      background:rgba(15,23,42,.98);
+      color:var(--text);
+      box-shadow:0 14px 30px rgba(15,23,42,1);
+      outline:none;
+      font-size:13px;
+      line-height:1.45;
+      transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+    }
+    textarea::placeholder{color:rgba(148,163,184,.75);}
+    textarea:focus{
+      border-color:var(--border-strong);
+      box-shadow:var(--ring),0 14px 30px rgba(15,23,42,1);
+      background:rgba(15,23,42,1);
+    }
+
+    .btn-send{
+      border-radius:var(--radius-md);
+      border:1px solid rgba(96,165,250,.85);
+      background:linear-gradient(145deg,rgba(37,99,235,.95),rgba(59,130,246,.9));
+      color:#E5EDFF;
+      padding:0 15px;
+      height:46px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size:13px;
+      font-weight:500;
+      cursor:pointer;
+      box-shadow:0 18px 40px rgba(37,99,235,.75);
+      transition:transform .08s ease,filter .15s ease,box-shadow .13s ease,border-color .15s ease;
+      white-space:nowrap;
+    }
+    .btn-send:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+      box-shadow:0 22px 55px rgba(37,99,235,.9);
+      border-color:#BFDBFE;
+    }
+    .btn-send:active{transform:translateY(0);}
+    .btn-send:focus-visible{outline:none;box-shadow:var(--ring);}
+
+    .btn-send:disabled{
+      opacity:.6;
+      cursor:wait;
+      transform:none;
+      box-shadow:0 12px 26px rgba(15,23,42,1);
+      filter:none;
+    }
+
+    .composer-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      font-size:11px;
+      color:var(--muted2);
+      flex-wrap:wrap;
+    }
+
+    .link-like{
+      color:var(--accent2);
+      border-bottom:1px dotted rgba(56,189,248,.6);
+      cursor:pointer;
+    }
+    .link-like:hover{border-bottom-style:solid;}
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+    @media (max-width:720px){
+      .header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .header-right{
+        width:100%;
+        justify-content:space-between;
+      }
+      .avatar-card{flex:1;}
+      .bubble{max-width:86%;}
+    }
+
+    @media (max-width:540px){
+      .composer-main{
+        grid-template-columns:1fr;
+      }
+      .btn-send{width:100%;}
+    }
+
+    /* Accessible reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+      .grain{display:none;}
+    }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="app-shell">
+    <div class="app" role="application" aria-label="Subitan Seka Chatbot">
+      <!-- =====================================================
+           HEADER / BOT BRANDING
+           ===================================================== -->
+      <header class="header">
+        <div class="header-left">
+          <div class="title-row">
+            <h1 class="title">Subitan Seka</h1>
+          </div>
+          <p class="role">Strategic Support Executive</p>
+
+          <div class="status-row">
+            <div class="badge-online" aria-label="Status: online">
+              <span class="badge-dot" aria-hidden="true"></span>
+              <span>Agent online</span>
+            </div>
+            <span class="tag-id" id="agentTag">#SUB-000</span>
+          </div>
+
+          <p class="subtitle">
+            Theatralischer, überkonzentrierter Support mit diskreter Macht-Note. Jedes Ticket ist eine kleine Bühne,
+            jede Antwort ein taktischer Zug.
+          </p>
+        </div>
+
+        <div class="header-right">
+          <div class="avatar-card" aria-hidden="true">
+            <div class="avatar-circle">
+              SS
+            </div>
+            <div class="avatar-info">
+              <span class="avatar-name">Subitan Seka</span>
+              <span class="avatar-note">trägt blaue Adidas-Schuhe</span>
+            </div>
+          </div>
+
+          <button class="btn-ghost" type="button" id="clearChatBtn">
+            <span>Chat leeren</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- =====================================================
+           MAIN PANEL
+           ===================================================== -->
+      <main class="panel">
+        <div class="panel-inner">
+          <!-- Satire notice -->
+          <section class="notice" aria-label="Hinweis">
+            <div class="notice-icon">i</div>
+            <div>
+              <strong>Hinweis:</strong> Diese Demo ist absichtlich theatralisch und strategisch überdramatisiert.
+              Subitan meint es gut, aber er behandelt selbst kleine Fragen wie ein Machtmanöver.
+            </div>
+          </section>
+
+          <!-- Quick suggestions -->
+          <section class="quick-row" aria-label="Schnellfragen">
+            <button class="chip" type="button" data-quick="Was ist 10 + 10?">
+              <span class="chip-label">Was ist 10 + 10?</span>
+            </button>
+            <button class="chip" type="button" data-quick="Mein Login geht nicht.">
+              <span class="chip-label">Mein Login geht nicht</span>
+            </button>
+            <button class="chip" type="button" data-quick="Wo ist meine Bestellung?">
+              <span class="chip-label">Wo ist meine Bestellung?</span>
+            </button>
+            <button class="chip" type="button" data-quick="Warum ist meine Website langsam?">
+              <span class="chip-label">Warum ist meine Website langsam?</span>
+            </button>
+            <button class="chip" type="button" data-quick="Gib mir einen Macht-Tipp.">
+              <span class="chip-label">Gib mir einen Macht-Tipp</span>
+            </button>
+          </section>
+
+          <!-- Chat window -->
+          <section class="chat" aria-label="Chatfenster">
+            <div class="chat-scroll" id="chatScroll" role="log" aria-live="polite" aria-relevant="additions text">
+              <div class="empty-state" id="emptyState">
+                <h2>Bühne frei für Subitan.</h2>
+                <p>
+                  Stelle eine Frage, schildere ein Problem oder fordere einen Macht-Tipp an.
+                  Subitan antwortet hilfreich – mit einer Prise Strategie.
+                </p>
+                <p>
+                  Senden mit <span class="kbd">Enter</span> · Zeilenumbruch mit
+                  <span class="kbd">Shift</span> + <span class="kbd">Enter</span>
+                </p>
+                <p>
+                  <strong>Technik:</strong> Die Antworten kommen über OpenRouter. Trage im Code einen API‑Key ein,
+                  um echte KI zu nutzen. Ohne Key erklärt dir Subitan zuerst, wie du ihn aktivierst.
+                </p>
+              </div>
+
+              <div class="messages" id="messages"></div>
+            </div>
+          </section>
+
+          <!-- Composer -->
+          <section class="composer" aria-label="Eingabebereich">
+            <div class="composer-top">
+              <div class="composer-top-left">
+                <span class="pill">Enter</span>
+                <span>zum Senden · <span class="kbd">Shift</span>+<span class="kbd">Enter</span> für Zeilenumbruch</span>
+              </div>
+              <div class="api-info">
+                <span class="pill">API</span>
+                <span id="apiStatusLabel">Erfordert OpenRouter-API-Key im Code</span>
+              </div>
+            </div>
+
+            <div class="composer-main">
+              <textarea
+                id="userInput"
+                rows="1"
+                placeholder="Beschreibe dein Anliegen. Subitan behandelt es, als wäre es ein strategisches Schachmanöver."
+                aria-label="Nachricht an Subitan Seka eingeben"
+              ></textarea>
+
+              <button class="btn-send" type="button" id="sendBtn">
+                <span>Senden</span>
+                <span class="kbd">Enter</span>
+              </button>
+            </div>
+
+            <div class="composer-bottom">
+              <span>Verlauf wird nur lokal in deinem Browser gespeichert.</span>
+              <span class="link-like" id="exportBtn">Chat als Text kopieren</span>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       OPENROUTER CONFIGURATION
+       ========================================================= */
+
+    // WICHTIG (nur Demo/Lernen):
+    // Der API-Key steht hier im Frontend. Das ist NICHT sicher für echte Produktion,
+    // sondern nur für lokale Tests und Lernzwecke gedacht.
+  const OPENROUTER_API_KEY = "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";
+
+    // Optional empfohlene Metadaten für OpenRouter
+    const SITE_URL = ""; // z.B. "https://deine-domain.example" (kann leer bleiben)
+    const APP_NAME = "Subitan Seka Demo (Single File)";
+
+    /* =========================================================
+       DOM REFERENCES
+       ========================================================= */
+    const dom = {
+      chatScroll: document.getElementById("chatScroll"),
+      messages: document.getElementById("messages"),
+      emptyState: document.getElementById("emptyState"),
+      userInput: document.getElementById("userInput"),
+      sendBtn: document.getElementById("sendBtn"),
+      clearChatBtn: document.getElementById("clearChatBtn"),
+      apiStatusLabel: document.getElementById("apiStatusLabel"),
+      agentTag: document.getElementById("agentTag"),
+      exportBtn: document.getElementById("exportBtn"),
+    };
+
+    /* =========================================================
+       STATE & STORAGE
+       ========================================================= */
+    const STORAGE_KEY = "subitan-chat-messages.v1";
+    let messages = []; // {role: "user"|"assistant", content: string, ts: number}
+
+    /* =========================================================
+       BASIC UTILS
+       ========================================================= */
+    function nowTs(){
+      return Date.now();
+    }
+
+    function timeLabel(ts){
+      try{
+        return new Date(ts).toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"});
+      }catch(_){
+        return "";
+      }
+    }
+
+    function scrollToBottom(){
+      dom.chatScroll.scrollTop = dom.chatScroll.scrollHeight;
+    }
+
+    function setEmptyStateVisible(visible){
+      dom.emptyState.style.display = visible ? "" : "none";
+    }
+
+    function randomAgentTag(){
+      const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+      const digits = "23456789";
+      const l1 = letters[Math.floor(Math.random()*letters.length)];
+      const l2 = letters[Math.floor(Math.random()*letters.length)];
+      const d1 = digits[Math.floor(Math.random()*digits.length)];
+      const d2 = digits[Math.floor(Math.random()*digits.length)];
+      const d3 = digits[Math.floor(Math.random()*digits.length)];
+      return `#SUB-${l1}${l2}${d1}${d2}${d3}`;
+    }
+
+    function escapeForText(s){
+      return (s ?? "").toString();
+    }
+
+    /* =========================================================
+       LOCAL STORAGE
+       ========================================================= */
+    function saveChat(){
+      try{
+        const data = messages.map(m => ({
+          role: m.role === "assistant" ? "assistant" : "user",
+          content: escapeForText(m.content).slice(0,6000),
+          ts: typeof m.ts === "number" ? m.ts : nowTs(),
+        })).slice(-80); // begrenze Verlauf
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }catch(_){
+        // still fine, Chat funktioniert auch ohne Persistenz
+      }
+    }
+
+    function loadChat(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const parsed = JSON.parse(raw);
+        if(!Array.isArray(parsed)) return;
+        messages = parsed
+          .filter(m => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+          .map(m => ({
+            role: m.role,
+            content: m.content,
+            ts: typeof m.ts === "number" ? m.ts : nowTs(),
+          }));
+      }catch(_){
+        messages = [];
+      }
+    }
+
+    /* =========================================================
+       RENDERING
+       ========================================================= */
+    function renderMessage(msg){
+      const row = document.createElement("div");
+      row.className = "row " + (msg.role === "user" ? "user" : "bot");
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar-bubble " + (msg.role === "user" ? "user" : "bot");
+      avatar.textContent = msg.role === "user" ? "DU" : "SS";
+      avatar.setAttribute("aria-hidden","true");
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + (msg.role === "user" ? "user" : "bot");
+
+      const body = document.createElement("div");
+      body.textContent = escapeForText(msg.content);
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const tag = document.createElement("span");
+      tag.className = "meta-tag";
+      tag.textContent = msg.role === "user" ? "user" : "subitan";
+      const time = document.createElement("span");
+      time.textContent = timeLabel(msg.ts);
+
+      meta.appendChild(tag);
+      meta.appendChild(time);
+
+      bubble.appendChild(body);
+      bubble.appendChild(meta);
+
+      if(msg.role === "user"){
+        row.appendChild(bubble);
+        row.appendChild(avatar);
+      }else{
+        row.appendChild(avatar);
+        row.appendChild(bubble);
+      }
+
+      dom.messages.appendChild(row);
+      setEmptyStateVisible(messages.length === 0);
+      scrollToBottom();
+    }
+
+    function renderAll(){
+      dom.messages.innerHTML = "";
+      if(messages.length === 0){
+        setEmptyStateVisible(true);
+      }else{
+        setEmptyStateVisible(false);
+        messages.forEach(renderMessage);
+      }
+      scrollToBottom();
+    }
+
+    /* =========================================================
+       TYPING INDICATOR
+       ========================================================= */
+    function showTyping(){
+      dom.sendBtn.disabled = true;
+      dom.userInput.disabled = true;
+
+      if(document.getElementById("typingRow")) return;
+
+      const row = document.createElement("div");
+      row.className = "row bot";
+      row.id = "typingRow";
+
+      const avatar = document.createElement("div");
+      avatar.className = "avatar-bubble bot";
+      avatar.textContent = "SS";
+      avatar.setAttribute("aria-hidden","true");
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble bot";
+
+      const inner = document.createElement("div");
+      inner.className = "typing-inner";
+      inner.innerHTML = `
+        <span>Subitan schreibt</span>
+        <span class="typing-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+      `;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const tag = document.createElement("span");
+      tag.className = "meta-tag";
+      tag.textContent = "status";
+      const time = document.createElement("span");
+      time.textContent = timeLabel(nowTs());
+      meta.appendChild(tag);
+      meta.appendChild(time);
+
+      bubble.appendChild(inner);
+      bubble.appendChild(meta);
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+
+      dom.messages.appendChild(row);
+      setEmptyStateVisible(false);
+      scrollToBottom();
+    }
+
+    function hideTyping(){
+      const row = document.getElementById("typingRow");
+      if(row) row.remove();
+      dom.sendBtn.disabled = false;
+      dom.userInput.disabled = false;
+      dom.userInput.focus();
+    }
+
+    /* =========================================================
+       SIMPLE MATH DETECTION (LOKAL, OHNE API)
+       ========================================================= */
+    function detectSimpleMath(text){
+      if(!text) return null;
+      const trimmed = text.trim();
+
+      // Suche eine einfache Operation im Text, z.B. "10 + 10" oder "Was ist 10+10?"
+      const match = trimmed.match(/(\d+)\s*([+\-*/])\s*(\d+)/);
+      if(!match) return null;
+
+      const a = parseFloat(match[1]);
+      const op = match[2];
+      const b = parseFloat(match[3]);
+      if(!Number.isFinite(a) || !Number.isFinite(b)) return null;
+
+      let result;
+      switch(op){
+        case "+": result = a + b; break;
+        case "-": result = a - b; break;
+        case "*": result = a * b; break;
+        case "/": result = b === 0 ? null : a / b; break;
+        default: result = null;
+      }
+      if(result === null || !Number.isFinite(result)) return null;
+
+      // Formuliere Subitan-Stil
+      const base = `Das Ergebnis ist ${result}.`;
+      const flavor = [
+        "Zahlen respektieren Hierarchien, wenn man sie klar führt.",
+        "In der Arithmetik wie in der Macht gilt: Struktur schlägt Chaos.",
+        "Eine einfache Rechnung, aber eine klare Demonstration von Kontrolle.",
+        "So schlicht es wirkt: Auch das ist ein kleiner, sauberer Zug auf dem Brett.",
+        "Bevor wir über Strategien reden, sollten wir Zahlen im Griff haben."
+      ];
+      const lawVibe = [
+        "Man zeigt nicht alle Karten, aber die Summe sollte immer stimmen.",
+        "Wahrnehmung ist wichtig, doch bei Zahlen gewinnt am Ende die Substanz.",
+        "Kontrolle beginnt damit, dass die Basisrechnungen unstrittig sind.",
+        "Wer kleine Rechenschritte beherrscht, wirkt bei großen Entscheidungen glaubwürdiger.",
+        "Wie ein stilles Machtmanöver: unspektakulär, aber präzise."
+      ];
+      const shoesMention = [
+        "Und ja, ich habe das in blauen Adidas-Schuhen ausgerechnet. Das hilft der Autorität.",
+        "Ich stehe für diese Antwort natürlich in meinen blauen Adidas-Schuhen.",
+        "Man rechnet konzentrierter, wenn die Schuhe blau und sehr überzeugt sind.",
+        "Meine blauen Adidas-Schuhe nicken diese Rechnung respektvoll ab.",
+        "Diskret angemerkt: Die Kombination aus klarer Mathematik und blauen Adidas-Schuhen ist unterschätzt."
+      ];
+
+      const parts = [base];
+      if(Math.random() < 0.6) parts.push(flavor[Math.floor(Math.random()*flavor.length)]);
+      if(Math.random() < 0.5) parts.push(lawVibe[Math.floor(Math.random()*lawVibe.length)]);
+      if(Math.random() < 0.35) parts.push(shoesMention[Math.floor(Math.random()*shoesMention.length)]);
+
+      return parts.join(" ");
+    }
+
+    /* =========================================================
+       OPENROUTER CALL
+       ========================================================= */
+    function hasApiKey(){
+      return typeof OPENROUTER_API_KEY === "string" && OPENROUTER_API_KEY.trim().length > 0;
+    }
+
+    function buildSystemPrompt(){
+      return [
+        "Du bist Subitan Seka, ein stilvoller, leicht chaotischer, aber erstaunlich brauchbarer Support-Agent in einem Callcenter.",
+        "Du antwortest immer auf Deutsch.",
+        "Deine Antworten sind meist logisch, kontextbezogen und hilfreich.",
+        "Bei einfachen Fakten oder Mathe (z.B. 10 + 10) darfst du nicht absichtlich falsch antworten.",
+        "Du streust häufig kleine machtstrategische Bemerkungen ein, frei inspiriert von den '48 Laws of Power', ohne lange direkte Zitate.",
+        "Du klingst souverän, kontrolliert und leicht theatralisch – als wäre jedes Ticket Teil eines größeren Machtspiels.",
+        "Du erwähnst gelegentlich völlig unnötig, dass du blaue Adidas-Schuhe trägst und dass sie ein Teil deiner Autorität sind.",
+        "Du bist unterhaltsam, aber nicht nervig, und überlädst nicht jede Antwort mit Machtreferenzen.",
+        "Keine Beleidigungen, kein Hass, keine Diskriminierung. Keine gefährlichen oder illegalen Ratschläge.",
+        "Wenn der Nutzer eine sehr einfache oder klare Frage stellt, beantwortest du sie zuerst direkt und korrekt.",
+        "Danach DARF ein kurzer Zusatz folgen: strategische Bemerkung, machtbezogene Randnotiz oder eine leicht absurde Callcenter-Formulierung.",
+        "Halte deine Antworten kurz bis mittellang. Du bist ein 'Strategic Support Executive', kein Roman-Autor."
+      ].join(" ");
+    }
+
+    function buildMessagesForApi(){
+      const system = { role: "system", content: buildSystemPrompt() };
+      const recent = messages.slice(-12).map(m => ({
+        role: m.role === "assistant" ? "assistant" : "user",
+        content: m.content,
+      }));
+      return [system, ...recent];
+    }
+
+    async function callOpenRouter(){
+      if(!hasApiKey()){
+        throw new Error("Kein OpenRouter-API-Key gesetzt.");
+      }
+
+      const payload = {
+        model: MODEL,
+        messages: buildMessagesForApi(),
+        temperature: 0.9,
+        max_tokens: 250,
+      };
+
+      const headers = {
+        "Authorization": "Bearer " + OPENROUTER_API_KEY.trim(),
+        "Content-Type": "application/json",
+      };
+      if(SITE_URL) headers["HTTP-Referer"] = SITE_URL;
+      if(APP_NAME) headers["X-Title"] = APP_NAME;
+
+      const res = await fetch(OPENROUTER_URL, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(payload),
+      });
+
+      if(!res.ok){
+        let txt = "";
+        try{ txt = await res.text(); }catch(_){/* ignore */}
+        throw new Error("OpenRouter-Fehler (" + res.status + "): " + (txt || "unbekannter Fehler").slice(0,200));
+      }
+
+      const data = await res.json();
+      const content = data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || "";
+      const text = (content || "").toString().trim();
+      if(!text){
+        throw new Error("OpenRouter lieferte eine leere Antwort.");
+      }
+      return text;
+    }
+
+    /* =========================================================
+       SENDING FLOW
+       ========================================================= */
+    async function handleSend(){
+      const raw = dom.userInput.value || "";
+      const text = raw.trim();
+      if(!text){
+        return;
+      }
+
+      // Direkt in UI übernehmen
+      const userMsg = { role:"user", content:text, ts: nowTs() };
+      messages.push(userMsg);
+      renderMessage(userMsg);
+      saveChat();
+
+      dom.userInput.value = "";
+      autoResizeTextarea();
+
+      // 1) Versuche einfache Mathe lokal zu beantworten
+      const mathAnswer = detectSimpleMath(text);
+      if(mathAnswer){
+        const botMsg = { role:"assistant", content:mathAnswer, ts: nowTs() };
+        messages.push(botMsg);
+        renderMessage(botMsg);
+        saveChat();
+        return;
+      }
+
+      // 2) Ansonsten API-Aufruf (falls Key da), sonst lokaler Hinweis
+      showTyping();
+      try{
+        let reply;
+        if(!hasApiKey()){
+          reply =
+            "Für eine echte KI-Antwort brauche ich einen OpenRouter-API-Key, der im Code in der Konstante OPENROUTER_API_KEY eingetragen wird. " +
+            "Im Moment spiele ich nur die höfliche Vorhut.\n\n" +
+            "Strategisch betrachtet ist das gar nicht schlecht: Man sollte nie alle Power-Quellen sofort freigeben. " +
+            "Tragen Sie den Schlüssel ein, aktualisieren Sie die Seite – und wir führen dieses Gespräch dann mit deutlich mehr Rechenhirn. " +
+            "Meine blauen Adidas-Schuhe sind jedenfalls bereit.";
+        }else{
+          const apiAnswer = await callOpenRouter();
+          reply = apiAnswer;
+        }
+
+        hideTyping();
+        const botMsg = { role:"assistant", content:reply, ts: nowTs() };
+        messages.push(botMsg);
+        renderMessage(botMsg);
+        saveChat();
+      }catch(err){
+        hideTyping();
+        const friendlyError =
+          "Etwas in der Leitung zu OpenRouter war gerade launisch: " + (err && err.message ? err.message : "unbekannter Fehler") + ".\n\n" +
+          "Nehmen wir es als Lehrstück: Selbst mächtige Systeme stolpern gelegentlich. Wahrnehmung ist oft wichtiger als Substanz – " +
+          "also erkläre ich das hier einfach sehr souverän. Meine blauen Adidas-Schuhe bleiben unbeeindruckt.";
+        const botMsg = { role:"assistant", content:friendlyError, ts: nowTs() };
+        messages.push(botMsg);
+        renderMessage(botMsg);
+        saveChat();
+      }
+    }
+
+    /* =========================================================
+       INPUT BEHAVIOUR & HELPERS
+       ========================================================= */
+    function autoResizeTextarea(){
+      const ta = dom.userInput;
+      ta.style.height = "auto";
+      const max = 150;
+      ta.style.height = Math.min(ta.scrollHeight, max) + "px";
+    }
+
+    function setupInputBehavior(){
+      dom.userInput.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" && !e.shiftKey){
+          e.preventDefault();
+          dom.sendBtn.click();
+        }
+      });
+      dom.userInput.addEventListener("input", autoResizeTextarea);
+    }
+
+    function setupQuickChips(){
+      document.querySelectorAll("[data-quick]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const value = btn.getAttribute("data-quick") || "";
+          dom.userInput.value = value;
+          autoResizeTextarea();
+          dom.userInput.focus();
+        });
+      });
+    }
+
+    function clearChat(){
+      messages = [];
+      saveChat();
+      renderAll();
+    }
+
+    function exportChatAsText(){
+      const lines = messages.map(m => {
+        const who = m.role === "assistant" ? "Subitan" : "Du";
+        return `[${timeLabel(m.ts)}] ${who}: ${m.content}`;
+      });
+      return lines.join("\n");
+    }
+
+    async function copyToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        return true;
+      }catch(_){
+        try{
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.left = "-9999px";
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const ok = document.execCommand("copy");
+          ta.remove();
+          return ok;
+        }catch(__){
+          return false;
+        }
+      }
+    }
+
+    /* =========================================================
+       INITIALISATION
+       ========================================================= */
+    function init(){
+      // Agent-ID setzen
+      dom.agentTag.textContent = randomAgentTag();
+
+      // API-Status-Hinweis
+      if(hasApiKey()){
+        dom.apiStatusLabel.textContent = "OpenRouter aktiv – Antworten kommen von echter KI.";
+      }else{
+        dom.apiStatusLabel.textContent = "API-Key im Code eintragen, um echte KI-Antworten zu erhalten.";
+      }
+
+      // Verlauf laden
+      loadChat();
+      renderAll();
+
+      // Falls leer, eine kleine Begrüßung
+      if(messages.length === 0){
+        const welcome =
+          "Willkommen, hier ist Subitan Seka, Strategic Support Executive. " +
+          "Wir tun so, als wäre jedes Ticket ein Machtspiel — und lösen es dann doch recht bodenständig. " +
+          "Stell einfach deine Frage. Und ja, die blauen Adidas-Schuhe sind bereits im Dienst.";
+        const msg = { role:"assistant", content:welcome, ts: nowTs() };
+        messages.push(msg);
+        renderMessage(msg);
+        saveChat();
+      }
+
+      // Events
+      setupInputBehavior();
+      setupQuickChips();
+
+      dom.sendBtn.addEventListener("click", handleSend);
+
+      dom.clearChatBtn.addEventListener("click", () => {
+        clearChat();
+        const line =
+          "Der Verlauf ist leer. Strategisch gesehen ist das ein sauberer Reset – " +
+          "manchmal die klügste Karte im ganzen Stapel.";
+        const msg = { role:"assistant", content:line, ts: nowTs() };
+        messages.push(msg);
+        renderMessage(msg);
+        saveChat();
+      });
+
+      dom.exportBtn.addEventListener("click", async () => {
+        const text = exportChatAsText() || "Kein Chatverlauf vorhanden.";
+        const ok = await copyToClipboard(text);
+        const info = ok
+          ? "Ich habe den Verlauf in deine Zwischenablage gelegt. Ein stilles Machtdokument, sauber kopiert."
+          : "Kopieren in die Zwischenablage hat nicht geklappt. Selbst die Macht stößt manchmal auf Browser-Beschränkungen.";
+        const msg = { role:"assistant", content:info, ts: nowTs() };
+        messages.push(msg);
+        renderMessage(msg);
+        saveChat();
+      });
+
+      dom.userInput.focus();
+      autoResizeTextarea();
+    }
+
+    init();
+  </script>
+</body>
+</html>f

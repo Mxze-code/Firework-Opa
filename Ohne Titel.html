@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>LifeFlow – Mini Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* ================================
+       Einfaches, modernes Layout
+       ================================ */
+    :root{
+      --bg:#050816;
+      --card:#0b1020;
+      --card-soft:#111827;
+      --accent:#3b82f6;
+      --accent-soft:#60a5fa;
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+      --border:#1f2937;
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      min-height:100vh;
+      font-family: system-ui,-apple-system,"SF Pro Text","Segoe UI",sans-serif;
+      background:
+        radial-gradient(900px 600px at 0% 0%,rgba(96,165,250,.3),transparent 60%),
+        radial-gradient(900px 600px at 100% 0%,rgba(45,212,191,.25),transparent 60%),
+        radial-gradient(900px 600px at 50% 100%,rgba(129,140,248,.25),transparent 60%),
+        var(--bg);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+    }
+
+    .app{
+      width:min(980px,100%);
+      background:rgba(15,23,42,.9);
+      border-radius:20px;
+      border:1px solid rgba(55,65,81,.8);
+      box-shadow:0 24px 70px rgba(0,0,0,.8);
+      padding:18px 18px 20px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:flex-end;
+    }
+
+    .brand-title{
+      font-size:20px;
+      font-weight:600;
+      letter-spacing:-0.03em;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .logo-dot{
+      width:18px;
+      height:18px;
+      border-radius:8px;
+      background:linear-gradient(135deg,#3b82f6,#22c55e);
+      box-shadow:0 0 0 3px rgba(15,23,42,1),0 12px 24px rgba(37,99,235,.7);
+    }
+
+    .subtitle{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .top-right{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      align-items:flex-end;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .badge-today{
+      border-radius:999px;
+      border:1px solid var(--border);
+      padding:4px 10px;
+      background:#020617;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background:#22c55e;
+      box-shadow:0 0 0 3px rgba(34,197,94,.4);
+    }
+
+    /* Layout: oben Fokus, rechts Tagesinfo; unten kleine Widgets */
+    .grid-main{
+      display:grid;
+      gap:12px;
+      margin-top:6px;
+    }
+    @media(min-width:800px){
+      .grid-main{
+        grid-template-columns:1.3fr 0.9fr;
+      }
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      padding:10px 11px;
+    }
+
+    .card h2{
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:3px;
+    }
+
+    .card small{
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .list{
+      margin-top:8px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:12px;
+    }
+
+    .task{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      padding:7px 8px;
+      border-radius:10px;
+      background:var(--card-soft);
+      border:1px solid rgba(55,65,81,.9);
+    }
+
+    .task-title{
+      font-size:12px;
+    }
+    .task-meta{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .pill{
+      border-radius:999px;
+      padding:3px 8px;
+      font-size:11px;
+      border:1px solid rgba(72,85,99,.9);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .pill-high{
+      border-color:rgba(248,113,113,.9);
+      color:#fecaca;
+    }
+
+    .pill-focus{
+      border-color:rgba(96,165,250,.9);
+      color:#bfdbfe;
+    }
+
+    .grid-bottom{
+      display:grid;
+      gap:10px;
+      margin-top:4px;
+    }
+    @media(min-width:800px){
+      .grid-bottom{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+    }
+
+    .row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      margin-top:7px;
+    }
+
+    .progress{
+      height:6px;
+      border-radius:999px;
+      background:#020617;
+      overflow:hidden;
+      margin-top:6px;
+    }
+    .progress-inner{
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,#3b82f6,#22c55e);
+      width:0%;
+      transition:width .3s ease;
+    }
+
+    /* Inputbereich */
+    .input-bar{
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size:12px;
+    }
+    @media(min-width:720px){
+      .input-row{
+        display:flex;
+        gap:8px;
+      }
+    }
+
+    .input-row input, .input-row select{
+      width:100%;
+      border-radius:9px;
+      border:1px solid var(--border);
+      background:#020617;
+      padding:6px 8px;
+      font-size:12px;
+      color:var(--text);
+      outline:none;
+    }
+    .input-row input:focus,
+    .input-row select:focus{
+      border-color:var(--accent-soft);
+      box-shadow:0 0 0 1px rgba(96,165,250,.8);
+    }
+
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:7px 12px;
+      font-size:12px;
+      font-weight:500;
+      cursor:pointer;
+      background:linear-gradient(135deg,#3b82f6,#22c55e);
+      color:white;
+      box-shadow:0 12px 30px rgba(37,99,235,.7);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+    }
+    .btn:hover{filter:brightness(1.05);}
+    .btn:active{transform:translateY(1px);box-shadow:0 8px 20px rgba(37,99,235,.6);}
+
+    .quick-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:11px;
+    }
+    .quick-tag{
+      border-radius:999px;
+      padding:3px 8px;
+      border:1px dashed rgba(75,85,99,.9);
+      color:var(--muted);
+      cursor:pointer;
+    }
+    .quick-tag:hover{
+      border-style:solid;
+      border-color:var(--accent-soft);
+      color:var(--accent-soft);
+    }
+
+    .hint{
+      margin-top:4px;
+      font-size:11px;
+      color:var(--muted);
+    }
+
+    .tiny{
+      font-size:10px;
+      color:var(--muted);
+      text-align:right;
+      margin-top:2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Kopfbereich -->
+    <header class="top">
+      <div>
+        <div class="brand-title">
+          <span class="logo-dot"></span>
+          <span>LifeFlow</span>
+        </div>
+        <p class="subtitle">Dein kleines Alltags-Dashboard in einer Datei.</p>
+      </div>
+      <div class="top-right">
+        <div class="badge-today">
+          <span class="dot"></span>
+          <span id="todayLabel">Heute</span>
+        </div>
+        <span id="quote" style="max-width:260px;text-align:right;">
+          Drei Klarheiten für heute schlagen zwanzig offene Tabs.
+        </span>
+      </div>
+    </header>
+
+    <!-- Hauptbereich -->
+    <section class="grid-main">
+      <!-- Links: Aufgaben & Fokus -->
+      <div class="card">
+        <h2>Tagesfokus</h2>
+        <small>Was heute wirklich zählt.</small>
+
+        <div class="list" id="taskList">
+          <!-- Aufgaben werden hier per JS eingefügt -->
+        </div>
+
+        <div class="input-bar">
+          <div class="input-row">
+            <input id="taskTitle" type="text" placeholder="Neue Aufgabe, z. B. „Projekt X 30 Minuten“" />
+          </div>
+          <div class="input-row">
+            <select id="taskArea">
+              <option value="Arbeit">Arbeit</option>
+              <option value="Studium">Studium</option>
+              <option value="Privat">Privat</option>
+              <option value="Health">Health</option>
+            </select>
+            <select id="taskPriority">
+              <option value="mittel">Priorität: mittel</option>
+              <option value="hoch">Priorität: hoch</option>
+              <option value="niedrig">Priorität: niedrig</option>
+            </select>
+          </div>
+          <button class="btn" id="addTaskBtn">
+            + Aufgabe für heute
+          </button>
+          <div class="quick-tags">
+            <span class="quick-tag" data-template="3 wichtigste Aufgaben definieren">3 wichtigste Aufgaben</span>
+            <span class="quick-tag" data-template="1 Fokusblock Deep Work">1 Fokusblock Deep Work</span>
+            <span class="quick-tag" data-template="Bewegung & Wasser einplanen">Bewegung & Wasser</span>
+          </div>
+          <p class="hint">
+            Tipp: Nutze LifeFlow nur für das, was heute wirklich relevant ist. Alles andere darf extern parken.
+          </p>
+        </div>
+      </div>
+
+      <!-- Rechts: Tagesüberblick & Health -->
+      <div class="card">
+        <h2>Tagesüberblick</h2>
+        <small>Kurzcheck für Energie, Termine und Habits.</small>
+
+        <div class="row">
+          <span>Heutige Aufgaben erledigt</span>
+          <span id="taskCount" class="pill">0 geplant</span>
+        </div>
+        <div class="progress">
+          <div id="taskProgress" class="progress-inner"></div>
+        </div>
+
+        <div class="row">
+          <span>Wasser</span>
+          <span id="waterLabel" class="pill">0 / 6 Gläser</span>
+        </div>
+        <div class="row">
+          <span>Bewegung</span>
+          <span id="moveLabel" class="pill">noch offen</span>
+        </div>
+        <div class="row">
+          <span>Stimmung</span>
+          <span id="moodLabel" class="pill pill-focus">neutral</span>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <button class="btn" id="quickHealthBtn" style="padding-inline:10px;">
+            + Health kurz aktualisieren
+          </button>
+        </div>
+
+        <p class="tiny">
+          Alles wird nur im lokalen Speicher deines Browsers gespeichert (localStorage).
+        </p>
+      </div>
+    </section>
+
+    <!-- Untere Widgets -->
+    <section class="grid-bottom">
+      <div class="card">
+        <h2>Heute</h2>
+        <small>Eine Sache, die du auf keinen Fall vergisst.</small>
+        <div class="list">
+          <div class="task">
+            <div>
+              <div class="task-title" id="todayOneThing">
+                Klar definieren, was „fertig“ heute bedeutet.
+              </div>
+              <div class="task-meta">Du kannst dir das im Kopf beantworten – oder hier im Tool.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Nächste 7 Tage</h2>
+        <small>Grober Blick nach vorn.</small>
+        <div class="list">
+          <div class="task">
+            <div>
+              <div class="task-title">1–2 größere Themen auswählen</div>
+              <div class="task-meta">Lieber Tiefe als 20 parallele Minibaustellen.</div>
+            </div>
+          </div>
+          <div class="task">
+            <div>
+              <div class="task-title">Fixpunkte markieren</div>
+              <div class="task-meta">Meetings, Termine, Abende, an denen nichts dazukommen sollte.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Brain Dump</h2>
+        <small>Einfach kurz den Kopf leeren.</small>
+        <textarea id="brainDump" rows="3" style="
+          width:100%;
+          margin-top:8px;
+          border-radius:9px;
+          border:1px solid var(--border);
+          background:#020617;
+          color:var(--text);
+          font-size:12px;
+          padding:6px 8px;
+          resize:vertical;
+        " placeholder="Alles, was dir gerade durch den Kopf geht – ohne Reihenfolge, ohne Bewertung."></textarea>
+        <p class="tiny">Wird automatisch lokal gespeichert.</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ======================================
+    // Sehr einfaches State-Handling (localStorage)
+    // ======================================
+    const taskListEl = document.getElementById("taskList");
+    const taskTitleEl = document.getElementById("taskTitle");
+    const taskAreaEl = document.getElementById("taskArea");
+    const taskPriorityEl = document.getElementById("taskPriority");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskCountEl = document.getElementById("taskCount");
+    const taskProgressEl = document.getElementById("taskProgress");
+    const waterLabelEl = document.getElementById("waterLabel");
+    const moveLabelEl = document.getElementById("moveLabel");
+    const moodLabelEl = document.getElementById("moodLabel");
+    const brainDumpEl = document.getElementById("brainDump");
+    const todayLabelEl = document.getElementById("todayLabel");
+    const quickHealthBtn = document.getElementById("quickHealthBtn");
+
+    const STORAGE_KEY = "lifeflow-mini-v1";
+
+    let state = {
+      tasks: [],
+      water: 0,
+      moved: false,
+      mood: "neutral",
+      brainDump: "",
+      oneThing: "",
+    };
+
+    function formatToday() {
+      const d = new Date();
+      return d.toLocaleDateString("de-DE", {
+        weekday: "long",
+        day: "2-digit",
+        month: "2-digit",
+      });
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          state = {
+            ...state,
+            ...parsed,
+          };
+        }
+      } catch (e) {
+        console.warn("Konnte gespeicherten Zustand nicht lesen:", e);
+      }
+    }
+
+    function renderTasks() {
+      taskListEl.innerHTML = "";
+      if (state.tasks.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "task";
+        empty.innerHTML = `
+          <div>
+            <div class="task-title">Noch keine Aufgaben für heute.</div>
+            <div class="task-meta">Füge oben 1–3 Dinge hinzu, die heute wirklich wichtig sind.</div>
+          </div>
+        `;
+        taskListEl.appendChild(empty);
+      } else {
+        state.tasks.forEach((t, index) => {
+          const div = document.createElement("div");
+          div.className = "task";
+          div.innerHTML = `
+            <div>
+              <div class="task-title">${t.title}</div>
+              <div class="task-meta">${t.area} · ${t.priority}</div>
+            </div>
+            <button aria-label="Aufgabe entfernen" style="
+              border:none;
+              background:transparent;
+              color:#6b7280;
+              font-size:14px;
+              cursor:pointer;
+            ">&times;</button>
+          `;
+          const btn = div.querySelector("button");
+          btn.addEventListener("click", () => {
+            state.tasks.splice(index, 1);
+            saveState();
+            renderAll();
+          });
+          taskListEl.appendChild(div);
+        });
+      }
+
+      taskCountEl.textContent = `${state.tasks.length} geplant`;
+
+      const ratio = Math.min(state.tasks.length, 5) / 5;
+      taskProgressEl.style.width = `${ratio * 100}%`;
+    }
+
+    function renderHealth() {
+      waterLabelEl.textContent = `${state.water} / 6 Gläser`;
+      moveLabelEl.textContent = state.moved ? "ja" : "noch offen";
+      moodLabelEl.textContent = state.mood;
+    }
+
+    function renderBrainDump() {
+      brainDumpEl.value = state.brainDump || "";
+    }
+
+    function renderToday() {
+      todayLabelEl.textContent = formatToday();
+    }
+
+    function renderAll() {
+      renderTasks();
+      renderHealth();
+      renderBrainDump();
+      renderToday();
+    }
+
+    // ===============================
+    // Event-Handling
+    // ===============================
+    addTaskBtn.addEventListener("click", () => {
+      const title = taskTitleEl.value.trim();
+      if (!title) return;
+      state.tasks.push({
+        title,
+        area: taskAreaEl.value,
+        priority: taskPriorityEl.value,
+      });
+      taskTitleEl.value = "";
+      saveState();
+      renderAll();
+      taskTitleEl.focus();
+    });
+
+    document.querySelectorAll(".quick-tag").forEach((el) => {
+      el.addEventListener("click", () => {
+        const tmpl = el.getAttribute("data-template") || "";
+        taskTitleEl.value = tmpl;
+        taskTitleEl.focus();
+      });
+    });
+
+    brainDumpEl.addEventListener("input", () => {
+      state.brainDump = brainDumpEl.value;
+      saveState();
+    });
+
+    quickHealthBtn.addEventListener("click", () => {
+      // ganz simple Demo-Aktualisierung
+      state.water = Math.min(state.water + 1, 6);
+      state.moved = true;
+      if (state.mood === "neutral") state.mood = "gut";
+      else if (state.mood === "gut") state.mood = "sehr gut";
+      saveState();
+      renderHealth();
+    });
+
+    // ===============================
+    // Initialisierung
+    // ===============================
+    loadState();
+    renderAll();
+  </script>
+</body>
+</html>
