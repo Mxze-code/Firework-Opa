@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Large / generated
+Projects/lifeflow/node_modules/
+*.node
+
+# OS
+.DS_Store
