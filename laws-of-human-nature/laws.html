@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Laws | The Laws of Human Nature</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-logo">The Laws of Human Nature</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="laws.html" class="active">Explore the Laws</a></li>
+            <li><a href="learnings.html">Reflect</a></li>
+            <li><a href="about.html">About Greene</a></li>
+        </ul>
+        <button class="nav-toggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ========== PAGE HEADER ========== -->
+    <header class="page-header laws-page-header">
+        <div class="hero-bg-layer hero-bg-pattern"></div>
+        <div class="container">
+            <div class="laws-hero-composition">
+                <h1 id="heroSplitHeading" class="laws-hero-title">The 18 Laws</h1>
+                <p class="page-subtitle reveal-on-scroll">A structured knowledge library of Robert Greene's laws—search and explore each law in the official book order</p>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-wrapper reveal-on-scroll">
+                <input type="text" id="lawSearch" class="search-input" placeholder="Search by action title, law name, or keyword..." aria-label="Search laws">
+                <span class="search-icon">⌕</span>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions"></div>
+
+            <!-- Action Buttons -->
+            <div class="laws-actions reveal-on-scroll">
+                <button type="button" class="btn btn-primary btn-shiny" id="randomLawBtn">Random Law</button>
+                <a href="learnings.html" class="btn btn-secondary">Continue Learning</a>
+                <a href="#favoritesSection" class="btn btn-ghost" id="favoritesLink">★ Favorites</a>
+            </div>
+            <div class="random-law-output" id="randomLawOutput" style="display: none;">
+                <p class="random-law-label">Your random law</p>
+                <p class="random-law-title" id="randomLawTitle"></p>
+                <a href="#" class="btn btn-primary btn-read-law" id="randomLawReadBtn">Read Law →</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== FAVORITES SECTION ========== -->
+    <section class="favorites-section" id="favoritesSection" style="display: none;">
+        <div class="container">
+            <h2 class="section-label">★ Your Favorites</h2>
+            <div class="favorites-cards" id="favoritesCards"></div>
+        </div>
+    </section>
+
+    <!-- ========== LAST OPENED / CONTINUE ========== -->
+    <section class="continue-section" id="continueSection" style="display: none;">
+        <div class="container">
+            <h2 class="section-label">Continue Where You Left Off</h2>
+            <div class="continue-cards" id="continueCards"></div>
+        </div>
+    </section>
+
+    <!-- ========== LAW DETAIL PAGE (when ?id=X) ========== -->
+    <main class="law-detail-main" id="lawDetailMain" style="display: none;">
+        <div class="container">
+            <a href="laws.html" class="law-detail-back">← Back to all laws</a>
+            <article class="law-detail-article" id="lawDetailContent">
+                <!-- Populated by JavaScript -->
+            </article>
+            <nav class="law-detail-nav" id="lawDetailNav" aria-label="Navigate between laws">
+                <!-- Prev/Next populated by JavaScript -->
+            </nav>
+            <div class="law-detail-actions" id="lawDetailActions"></div>
+            <div class="law-detail-suggested" id="lawDetailSuggested"></div>
+        </div>
+    </main>
+
+    <!-- ========== LAWS GRID ========== -->
+    <main class="laws-main" id="lawsMain">
+        <div class="container">
+            <div class="laws-grid" id="lawsGrid">
+                <!-- Laws are populated by JavaScript from laws-data.js -->
+            </div>
+            <div class="no-results-state" id="noResults" style="display: none;">
+                <p class="no-results-title">No laws match your search</p>
+                <p class="no-results-hint">Try: <span id="searchHints"></span></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========== LAW DETAIL MODAL (fallback for grid) ========== -->
+    <div class="modal-overlay" id="lawModal">
+        <div class="modal">
+            <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+            <div class="modal-content" id="modalContent">
+                <!-- Content populated by JavaScript -->
+            </div>
+            <div class="modal-actions" id="modalActions">
+                <!-- Favorite, Studied, Save for Later buttons -->
+            </div>
+            <div class="modal-suggested" id="modalSuggested">
+                <!-- If you liked this, read next... -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="main-footer">
+        <div class="footer-ornament"></div>
+        <blockquote class="footer-quote reveal-on-scroll">
+            "Understanding these laws will transform how you interact with people, navigate relationships, and influence outcomes."
+        </blockquote>
+        <p class="footer-credit">— Robert Greene</p>
+        <nav class="footer-nav">
+            <a href="index.html">Home</a>
+            <a href="laws.html">Explore the Laws</a>
+            <a href="learnings.html">Reflect</a>
+            <a href="about.html">About Greene</a>
+            <a href="../laws-of-power/index.html">The 48 Laws</a>
+            <a href="../art-of-seduction/index.html">The Art of Seduction</a>
+            <a href="../mastery/index.html">Mastery</a>
+        </nav>
+    </footer>
+
+    <script src="laws-data.js"></script>
+    <script src="script.js"></script>
+    <script src="laws-animations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var params = new URLSearchParams(window.location.search);
+            var lawId = params.get('id') || params.get('open');
+            if (lawId) {
+                var id = parseInt(lawId, 10);
+                if (id >= 1 && id <= 18) {
+                    window.location.replace('law-' + id + '.html');
+                    return;
+                }
+            }
+            if (typeof renderLawsPage === 'function') renderLawsPage();
+        });
+    </script>
+</body>
+</html>

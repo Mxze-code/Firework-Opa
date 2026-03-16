@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Laws of Human Nature | Robert Greene</title>
+    <meta name="description" content="Master the 18 fundamental laws that govern human behavior. A premium learning experience based on Robert Greene's work.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-logo">The Laws of Human Nature</a>
+        <ul class="nav-links">
+            <li><a href="../index.html">Library</a></li>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="laws.html">Explore the Laws</a></li>
+            <li><a href="learnings.html">Reflect</a></li>
+            <li><a href="about.html">About Greene</a></li>
+        </ul>
+        <button class="nav-toggle" aria-label="Toggle menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <header class="hero hero-home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="hero-eyebrow reveal-on-scroll">Understanding the Forces That Shape Us</p>
+            <h1 class="hero-title split-text-heading" id="homeHeroTitle">The Laws of Human Nature</h1>
+            <p class="hero-author reveal-on-scroll">by Robert Greene</p>
+            <p class="hero-tagline reveal-on-scroll">Master the 18 fundamental laws that govern how people think, feel, and act. Understand yourself and others with clarity.</p>
+            <div class="hero-ctas reveal-on-scroll">
+                <a href="laws.html" class="btn btn-primary btn-shiny">Start Reading</a>
+                <a href="learnings.html" class="btn btn-secondary">Reflect on a Law</a>
+            </div>
+        </div>
+        <div class="hero-divider"></div>
+    </header>
+
+    <!-- ========== VALUE PROPOSITION ========== -->
+    <section class="value-section">
+        <div class="container">
+            <h2 class="section-title reveal-on-scroll">Why These Laws Matter</h2>
+            <p class="value-intro reveal-on-scroll">Human nature is not random. Beneath every interaction, decision, and relationship lies a pattern—laws that have governed behavior for millennia. Robert Greene's work distills centuries of wisdom into 18 principles you can apply today.</p>
+        </div>
+    </section>
+
+    <!-- ========== FEATURED LAWS ========== -->
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title reveal-on-scroll">Begin Your Exploration</h2>
+            <p class="section-subtitle reveal-on-scroll">Choose a law to read its full explanation, examples, and practical takeaways.</p>
+            <div class="featured-grid" id="featuredLaws"></div>
+            <div class="featured-cta reveal-on-scroll">
+                <a href="laws.html" class="btn btn-primary">Explore All 18 Laws</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== QUOTE ========== -->
+    <section class="quote-section">
+        <div class="container">
+            <blockquote class="site-quote reveal-on-scroll">
+                "The question isn't whether these laws are real. They are. The question is: Will you see them? And once you do, will you use them wisely?"
+            </blockquote>
+            <p class="quote-attribution reveal-on-scroll">— Robert Greene</p>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="main-footer">
+        <div class="footer-ornament"></div>
+        <nav class="footer-nav">
+            <a href="../index.html">Library</a>
+            <a href="index.html">Home</a>
+            <a href="laws.html">Explore the Laws</a>
+            <a href="learnings.html">Reflect</a>
+            <a href="about.html">About Greene</a>
+            <a href="../laws-of-power/index.html">The 48 Laws</a>
+            <a href="../art-of-seduction/index.html">The Art of Seduction</a>
+            <a href="../mastery/index.html">Mastery</a>
+        </nav>
+    </footer>
+
+    <script src="laws-data.js"></script>
+    <script src="script.js"></script>
+    <script src="laws-animations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof loadFeaturedLaws === 'function') loadFeaturedLaws();
+        });
+    </script>
+</body>
+</html>
