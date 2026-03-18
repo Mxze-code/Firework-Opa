@@ -28,7 +28,7 @@ export function FeatureCardsSection() {
         <div className="grid gap-8 md:grid-cols-3 lg:gap-10">
           {cards.map((card) => {
             const content = (
-              <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#1a2332] p-8 lg:p-10 transition hover:border-[#3d4a5d] hover:bg-[#243044]">
+              <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#1a2332] p-8 lg:p-10 transition-all duration-300 ease-out hover:border-[#c9a227]/40 hover:bg-[#243044] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:-translate-y-1">
                 <h3 className="font-heading text-lg font-semibold text-[#f0f4f8]">
                   {card.title}
                 </h3>

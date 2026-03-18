@@ -30,14 +30,15 @@ export function Navbar() {
       <div className="flex w-full items-center justify-between px-6 md:px-10 lg:px-12 xl:px-16">
         <Link
           href="/"
-          className="flex items-center shrink-0 rounded bg-white px-2.5 py-1.5 md:px-3 md:py-2"
+          className="flex items-center shrink-0 animate-logo-float transition-transform duration-300 hover:scale-[1.01]"
         >
           <img
-            src="/logo-hartmann.png"
+            src="/logo-hartmann.png?v=20260318"
             alt="Hartmann UG & Co. KG"
-            className="h-10 w-auto max-w-[140px] object-contain object-left md:h-12 md:max-w-[180px]"
-            width={180}
-            height={56}
+            className="h-12 w-auto max-w-none object-contain md:h-14 lg:h-16 xl:h-[4.5rem]"
+            width={360}
+            height={72}
+            draggable={false}
           />
         </Link>
 

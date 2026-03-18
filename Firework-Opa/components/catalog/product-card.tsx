@@ -9,7 +9,7 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="group flex flex-col rounded border border-[#2d3a4d] bg-[#1a2332] transition hover:border-[#3d4a5d] hover:bg-[#243044]">
+    <article className="group flex flex-col rounded border border-[#2d3a4d] bg-[#1a2332] transition-all duration-300 ease-out hover:border-[#c9a227]/40 hover:bg-[#243044] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:-translate-y-1">
       <Link href={`/katalog/${product.slug}`} className="block flex-1">
         <div className="aspect-[4/3] overflow-hidden rounded-t">
           {product.image ? (
@@ -50,7 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex gap-3">
           <Link
             href={`/katalog/${product.slug}`}
-            className="flex-1 border border-[#2d3a4d] px-4 py-2.5 text-center text-sm font-medium text-[#94a3b8] transition hover:border-[#3d4a5d] hover:text-[#f0f4f8] hover:bg-white/5"
+            className="flex-1 border border-[#2d3a4d] px-4 py-2.5 text-center text-sm font-medium text-[#94a3b8] transition-all duration-200 hover:border-[#3d4a5d] hover:text-[#f0f4f8] hover:bg-white/5 hover:-translate-y-0.5"
           >
             Details
           </Link>

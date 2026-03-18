@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Merriweather, Source_Sans_3 } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { UnhandledRejectionHandler } from "@/components/providers/unhandled-rejection-handler";
-import { CartProvider } from "@/lib/cart-context";
+import { AppProviders } from "@/components/providers/app-providers";
 import "./globals.css";
 
 const merriweather = Merriweather({
@@ -34,13 +33,11 @@ export default function RootLayout({
   return (
     <html lang="de" className={`${merriweather.variable} ${sourceSans.variable}`}>
       <body className="font-body antialiased">
-        <UnhandledRejectionHandler>
-          <CartProvider>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </CartProvider>
-        </UnhandledRejectionHandler>
+        <AppProviders>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </AppProviders>
       </body>
     </html>
   );

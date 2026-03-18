@@ -42,10 +42,10 @@ export function HeroSection() {
             Jahrzehnten. An Weiterverkäufer.
           </p>
 
-          {/* CTA-Button – veredelt */}
+          {/* CTA-Button – veredelt mit dezentem Hover */}
           <Link
             href="/katalog"
-            className="mt-12 inline-block border-2 border-[#c9a227] bg-[#c9a227]/5 px-12 py-4 text-base font-semibold text-[#c9a227] transition duration-200 hover:bg-[#c9a227] hover:text-[#0f1419]"
+            className="mt-12 inline-block border-2 border-[#c9a227] bg-[#c9a227]/5 px-12 py-4 text-base font-semibold text-[#c9a227] transition-all duration-300 ease-out hover:bg-[#c9a227] hover:text-[#0f1419] hover:shadow-[0_4px_20px_rgba(201,162,39,0.15)] hover:-translate-y-0.5"
           >
             Zum Katalog
           </Link>

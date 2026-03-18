@@ -23,7 +23,7 @@ export function AddToCartButton({
   };
 
   const base =
-    "inline-flex items-center justify-center font-medium transition border border-[#2d3a4d] text-[#c9a227] hover:border-[#c9a227] hover:bg-[#c9a227]/10";
+    "inline-flex items-center justify-center font-medium transition-all duration-200 border border-[#2d3a4d] text-[#c9a227] hover:border-[#c9a227] hover:bg-[#c9a227]/10 hover:-translate-y-0.5";
 
   const styles =
     variant === "compact"
