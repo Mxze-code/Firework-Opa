@@ -41,6 +41,7 @@ function getQuadraticBezierTangent(
 
 export function CartRocketAddToCart() {
   const rocketRef = useRef<HTMLDivElement | null>(null);
+  const rocketImgRef = useRef<HTMLImageElement | null>(null);
   const impactRef = useRef<HTMLDivElement | null>(null);
   const runIdRef = useRef(0);
   const rafRef = useRef<number | null>(null);
@@ -65,6 +66,15 @@ export function CartRocketAddToCart() {
       const logoEl = document.querySelector("[data-hartmann-logo]") as HTMLElement | null;
       const cartEl = document.querySelector("[data-cart-icon]") as HTMLElement | null;
       if (!logoEl || !cartEl) return;
+
+      const logoImgEl = logoEl as HTMLImageElement;
+      const rocketImgEl = rocketImgRef.current;
+      if (rocketImgEl) {
+        // Use the exact same logo asset the header renders.
+        // This keeps the animation visually identical to the Header mark.
+        const src = logoImgEl.currentSrc || logoImgEl.src;
+        rocketImgEl.src = src;
+      }
 
       runIdRef.current += 1;
       const runId = runIdRef.current;
@@ -100,12 +110,13 @@ export function CartRocketAddToCart() {
       // Rocket sizes (responsive-ish).
       const isMobile = window.innerWidth < 640;
       const durationMs = isMobile ? 760 : 860;
-      const rocketScale = isMobile ? 0.86 : 0.96;
 
       // Initial positioning
       rocketEl.style.opacity = "1";
       rocketEl.style.pointerEvents = "none";
-      rocketEl.style.transform = `translate3d(${P0.x}px, ${P0.y}px, 0) translate(-50%, -50%) rotate(-8deg) scale(${rocketScale})`;
+      rocketEl.style.width = `${logoRect.width}px`;
+      rocketEl.style.height = `${logoRect.height}px`;
+      rocketEl.style.transform = `translate3d(${P0.x}px, ${P0.y}px, 0) translate(-50%, -50%)`;
 
       impactEl.style.opacity = "0";
 
@@ -121,9 +132,8 @@ export function CartRocketAddToCart() {
         const tangent = getQuadraticBezierTangent(te, P0, P1, P2);
         const angle = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
 
-        // Subtle "breathing" to avoid a rigid feel.
-        const scale = rocketScale * (1 + 0.02 * Math.sin(Math.PI * t));
-        rocketEl.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) rotate(${angle}deg) scale(${scale})`;
+        // Important: no rotation / no skewed orientation. Keep it horizontal like the header mark.
+        rocketEl.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
 
         // Flame intensity: stronger near the beginning, then fades smoothly.
         const flame = flameRef.current;
@@ -177,74 +187,22 @@ export function CartRocketAddToCart() {
         }}
       >
         <svg
-          width="76"
-          height="76"
-          viewBox="0 0 120 120"
+          width="0"
+          height="0"
+          viewBox="0 0 0 0"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Rocket body */}
-          <defs>
-            <linearGradient id="r_gold" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#F8FAFC" stopOpacity="0.95" />
-              <stop offset="0.5" stopColor="#C9A227" stopOpacity="0.9" />
-              <stop offset="1" stopColor="#D4B03A" stopOpacity="0.6" />
-            </linearGradient>
-            <radialGradient id="f_gold" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(60 92) rotate(90) scale(28 26)">
-              <stop offset="0" stopColor="#F8FAFC" stopOpacity="0.95" />
-              <stop offset="0.35" stopColor="#C9A227" stopOpacity="0.75" />
-              <stop offset="1" stopColor="#C9A227" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-
-          {/* Flame group (behind rocket) */}
-          <g ref={flameRef} style={{ opacity: 0.5, transformOrigin: "60px 95px" }}>
-            <path
-              d="M60 92C48 104 45 112 60 114C75 112 72 104 60 92Z"
-              fill="url(#f_gold)"
-            />
-            <path
-              d="M60 92C53 100 50 106 60 108C70 106 67 100 60 92Z"
-              fill="#C9A227"
-              opacity="0.45"
-            />
-          </g>
-
-          {/* Fins */}
-          <path d="M39 78L30 92L48 92L39 78Z" fill="#C9A227" opacity="0.25" />
-          <path d="M81 78L72 92L90 92L81 78Z" fill="#C9A227" opacity="0.25" />
-
-          {/* Nose cone */}
-          <path
-            d="M60 10C45 28 43 42 43 55C43 68 48 78 60 86C72 78 77 68 77 55C77 42 75 28 60 10Z"
-            fill="url(#r_gold)"
-            opacity="0.9"
-            stroke="#F8FAFC"
-            strokeOpacity="0.65"
-            strokeWidth="1.2"
-          />
-
-          {/* Main body outline */}
-          <path
-            d="M60 18C48 34 48 48 48 58C48 69 52 76 60 81C68 76 72 69 72 58C72 48 72 34 60 18Z"
-            stroke="#C9A227"
-            strokeOpacity="0.75"
-            strokeWidth="1.2"
-          />
-
-          {/* Window / label */}
-          <circle cx="60" cy="57" r="8.5" fill="rgba(248,250,252,0.12)" stroke="#F8FAFC" strokeOpacity="0.55" strokeWidth="1.1" />
-          <circle cx="60" cy="57" r="4.2" fill="#C9A227" opacity="0.55" />
-
-          {/* Exhaust shimmer */}
-          <path
-            d="M52 92C56 86 64 86 68 92"
-            stroke="#F8FAFC"
-            strokeOpacity="0.35"
-            strokeWidth="1"
-            strokeLinecap="round"
-          />
+          {/* Flame is no longer part of the rocket graphic itself.
+              We keep a placeholder ref so the JS doesn't crash. */}
         </svg>
+
+        <img
+          ref={rocketImgRef}
+          alt=""
+          draggable={false}
+          className="cart-rocket-logo"
+        />
       </div>
 
       <div
