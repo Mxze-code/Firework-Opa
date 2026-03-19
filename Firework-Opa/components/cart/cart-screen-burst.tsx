@@ -12,6 +12,8 @@ type Particle = {
   y: number;
   vx: number;
   vy: number;
+  ax: number;
+  drag: number;
   size: number;
   lifeMs: number;
   ageMs: number;
@@ -75,12 +77,23 @@ export function CartScreenBurst() {
       return x * x * (3 - 2 * x); // smoothstep
     };
 
-      const drawFrame = (now: number, burstIdAtStart: number) => {
+    const easeOutCubic = (x: number) => 1 - Math.pow(1 - x, 3);
+    const smoothstep = (x: number, e0: number, e1: number) => {
+      const t = clamp((x - e0) / (e1 - e0), 0, 1);
+      return t * t * (3 - 2 * t);
+    };
+
+    const drawFrame = (now: number, burstIdAtStart: number) => {
       if (burstIdRef.current !== burstIdAtStart) return;
 
       const t = now - startAtRef.current;
       const durationMs = 820; // cover the whole multi-burst sequence
       const progress = clamp(t / durationMs, 0, 1);
+      const progressE = easeOutCubic(progress);
+
+      // Gentle ramp-in and fade-out to avoid an abrupt overlay feeling.
+      const rampIn = smoothstep(progress, 0, 0.12);
+      const fadeOut = 1 - smoothstep(progress, 0.72, 1);
 
       // Clear fully; then use additive blending for the glow.
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -103,7 +116,7 @@ export function CartScreenBurst() {
         const dtFlash = t - ft;
         if (dtFlash < 0 || dtFlash > flashWindow) continue;
         const lt = 1 - dtFlash / flashWindow; // 1 -> 0
-        const alpha = clamp(lt, 0, 1) * 0.35 * (1 - progress * 0.35);
+        const alpha = clamp(lt, 0, 1) * 0.32 * fadeOut * (1 - progressE * 0.25);
         ctx.globalAlpha = alpha;
         ctx.strokeStyle = "rgba(201,162,39,0.9)";
         ctx.lineWidth = 1 + lt * 2.2;
@@ -135,24 +148,29 @@ export function CartScreenBurst() {
 
         // Time-based fade (sparks die out quickly)
         p.ageMs += dt * 1000;
-        p.vx *= 0.985;
+
+        // Natural motion: drag + slight wind/acceleration for organic trajectories.
+        const dragPow = Math.pow(p.drag, dt * 60);
+        p.vx *= dragPow;
+        p.vy *= dragPow;
+        p.vx += p.ax * dt;
         p.vy += gravity * dt;
         p.x += p.vx * dt;
         p.y += p.vy * dt;
 
         const lifeT = clamp(p.ageMs / p.lifeMs, 0, 1);
-        const alpha = (1 - lifeT) * (1 - progress * 0.9);
+        const alpha = (1 - lifeT) * (1 - progressE * 0.85) * rampIn * fadeOut;
 
         const pal = palette[Math.floor(p.huePick * palette.length) % palette.length];
 
-        const tail = 0.35 + p.sparkle * 0.65;
+        const tail = 0.25 + p.sparkle * 0.45;
         const tx = p.x - (p.x - p.prevX) * (1 + tail);
         const ty = p.y - (p.y - p.prevY) * (1 + tail);
 
-        ctx.shadowBlur = 10 + p.sparkle * 16;
+        ctx.shadowBlur = 8 + p.sparkle * 12;
         ctx.shadowColor = pal.glow;
         ctx.strokeStyle = pal.glow;
-        ctx.lineWidth = 1 + p.sparkle * 1.2;
+        ctx.lineWidth = 0.9 + p.sparkle * 1.0;
         ctx.beginPath();
         ctx.moveTo(tx, ty);
         ctx.lineTo(p.x, p.y);
@@ -162,7 +180,13 @@ export function CartScreenBurst() {
         ctx.fillStyle = pal.color;
         ctx.globalAlpha = alpha;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size * (0.75 + sparkleEase(p.sparkle) * 0.5), 0, Math.PI * 2);
+        ctx.arc(
+          p.x,
+          p.y,
+          p.size * (0.55 + sparkleEase(p.sparkle) * 0.55),
+          0,
+          Math.PI * 2
+        );
         ctx.fill();
         ctx.globalAlpha = 1;
       }
@@ -200,9 +224,9 @@ export function CartScreenBurst() {
         const spawnAtMs = burstTimes[b];
 
         // A bit fewer particles per burst for a cleaner, higher-end look.
-        const count = 110;
-        const baseSpeed = 600; // px/s
-        const speedJitter = 360;
+        const count = 85;
+        const baseSpeed = 620; // px/s
+        const speedJitter = 340;
 
         for (let i = 0; i < count; i++) {
           const u = Math.random();
@@ -215,19 +239,25 @@ export function CartScreenBurst() {
           const vy = Math.sin(angle) * speed - (baseSpeed * upBias) / 1.9;
 
           // Larger initial sparks, shorter life.
-          const size = 0.8 + Math.random() * 2.0;
-          const lifeMs = 320 + Math.random() * 240;
+          const size = 0.75 + Math.random() * 1.75;
+          const lifeMs = 300 + Math.random() * 210;
           const sparkle = Math.random();
 
           // Slightly vary the origin for a natural "second burst" feel.
-          const ox = originX + (Math.random() - 0.5) * 40;
-          const oy = originY + (Math.random() - 0.5) * 26;
+          const ox = originX + (Math.random() - 0.5) * 36;
+          const oy = originY + (Math.random() - 0.5) * 22;
+
+          // Per-particle micro-wind and drag to avoid perfectly synchronized movement.
+          const ax = (Math.random() - 0.5) * 90; // px/s^2
+          const drag = 0.88 + Math.random() * 0.08;
 
           particlesRef.current.push({
             x: ox,
             y: oy,
             vx,
             vy,
+            ax,
+            drag,
             size,
             lifeMs,
             ageMs: 0,
