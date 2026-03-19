@@ -98,6 +98,7 @@ export function Navbar() {
           <img
             src={logoSrc}
             alt="Hartmann UG & Co. KG"
+            data-hartmann-logo
             className="h-12 w-auto max-w-none object-contain md:h-14 lg:h-16 xl:h-[4.5rem]"
             width={360}
             height={72}
@@ -121,8 +122,13 @@ export function Navbar() {
             onClick={() => triggerCartBurst()}
             className="relative flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[#94a3b8] hover:text-[#f0f4f8] hover:bg-white/5 rounded transition"
             aria-label="Warenkorb"
+            data-cart-icon
           >
-            <span className="relative inline-flex items-center justify-center w-6 h-6">
+            <span
+              className={`relative inline-flex items-center justify-center w-6 h-6 ${
+                burstParticles ? "cart-icon-burst-bounce" : ""
+              }`}
+            >
               <svg
                 className="relative z-10 h-5 w-5"
                 fill="none"

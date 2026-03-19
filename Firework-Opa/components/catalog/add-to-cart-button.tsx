@@ -27,18 +27,12 @@ export function AddToCartButton({
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Capture click origin so the screen-wide burst feels anchored to the UI.
-      const rect = e.currentTarget.getBoundingClientRect();
-      const originX = rect.left + rect.width / 2;
-      const originY = rect.top + rect.height / 2;
-
       addItem(product, quantity);
 
       window.dispatchEvent(
-        new CustomEvent("cart:burst", {
+        new CustomEvent("cart:rocket-add", {
           detail: {
-            originX,
-            originY,
+            productId: product.id,
           },
         })
       );
