@@ -47,3 +47,97 @@ body {
     animation: none;
   }
 }
+
+/* Dezente Partikel-Burst-Animation für Cart-Interaktionen */
+@keyframes cart-particle-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(0px, 0px) scale(0.85)
+      rotate(var(--rot, 0deg));
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--dx, 0px), var(--dy, 0px))
+      scale(0.7) rotate(var(--rot, 0deg));
+  }
+}
+
+.cart-particle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--w, 2px);
+  height: var(--h, 2px);
+  border-radius: 9999px;
+  background: var(--c, #c9a227);
+  opacity: 0;
+  animation: cart-particle-burst 420ms ease-out forwards;
+  animation-delay: var(--delay, 0ms);
+  box-shadow: 0 0 10px rgba(201, 162, 39, 0.14);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cart-particle {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Ruhige Entrance-Animation für den Startseiten-Hero */
+@keyframes hero-fade-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-bg-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+  }
+}
+
+.home-hero .hero-entrance {
+  opacity: 0;
+  animation: hero-fade-rise 820ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.home-hero .hero-entrance-1 {
+  animation-delay: 0ms;
+}
+.home-hero .hero-entrance-2 {
+  animation-delay: 120ms;
+}
+.home-hero .hero-entrance-3 {
+  animation-delay: 240ms;
+}
+.home-hero .hero-entrance-4 {
+  animation-delay: 360ms;
+}
+
+.home-hero .hero-bg-entrance {
+  opacity: 0;
+  animation: hero-bg-fade-in 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero .hero-entrance,
+  .home-hero .hero-bg-entrance {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

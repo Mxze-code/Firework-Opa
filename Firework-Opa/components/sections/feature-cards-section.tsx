@@ -10,7 +10,7 @@ const cards = [
     description: "Erfahrung und Verkauf seit ueber sieben Jahrzehnten.",
   },
   {
-    title: "Verfuegbar",
+    title: "Ganzjaehriger Vertrieb",
     description:
       "Ganzjaehriger Verkauf mit persoenlicher Beratung.",
   },
