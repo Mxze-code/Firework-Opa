@@ -63,6 +63,16 @@ export function CartRocketAddToCart() {
       const impactEl = impactRef.current;
       if (!rocketEl || !impactEl) return;
 
+      // Mobile: disable rocket flight entirely.
+      // Mobile feedback is handled by AddToCartButton -> cart:burst
+      // (full-screen fireworks via CartScreenBurst).
+      if (window.innerWidth < 640) {
+        rocketEl.style.opacity = "0";
+        rocketEl.style.pointerEvents = "none";
+        if (rafRef.current != null) window.cancelAnimationFrame(rafRef.current);
+        return;
+      }
+
       const logoEl = document.querySelector("[data-hartmann-logo]") as HTMLElement | null;
       const cartEl = document.querySelector("[data-cart-icon]") as HTMLElement | null;
       if (!logoEl || !cartEl) return;
@@ -101,25 +111,15 @@ export function CartRocketAddToCart() {
 
       // Straight flight: we avoid any noticeable curve so it reads as a
       // straight, horizontal rocket shot across the header area.
-      const isMobile = window.innerWidth < 640;
-
-      // Mobile: compact impulse instead of "full travel" across the screen.
-      // We still trigger the final spark/impact at the cart icon (P2),
-      // but the rocket itself only moves a short distance (pathEnd).
-      const rocketScale = isMobile ? 0.72 : 1;
-      const pathEnd = isMobile
-        ? {
-            x: P0.x + dx * 0.30,
-            y: P0.y + dy * 0.05,
-          }
-        : P2;
+      const rocketScale = 1;
+      const pathEnd = P2;
 
       const P1 = {
         x: (P0.x + pathEnd.x) / 2,
         y: (P0.y + pathEnd.y) / 2,
       };
 
-      const durationMs = isMobile ? 420 : 860;
+      const durationMs = 860;
 
       // Initial positioning
       rocketEl.style.opacity = "1";
@@ -169,7 +169,6 @@ export function CartRocketAddToCart() {
         impactEl.classList.add("cart-rocket-impact");
 
         // Trigger the cart feedback burst.
-        // On mobile, this will additionally light up the full-screen fireworks.
         // Navbar also listens to `cart:burst`.
         window.dispatchEvent(
           new CustomEvent("cart:burst", {
