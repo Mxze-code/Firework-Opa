@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getAllProductSlugs } from "@/lib/products";
-import { ProductImagePlaceholder } from "@/components/catalog/product-image-placeholder";
 import { AddToCartButton } from "@/components/catalog/add-to-cart-button";
+import { ProductMediaGallery } from "@/components/catalog/product-media-gallery";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -39,20 +39,11 @@ export default async function ProductDetailPage({ params }: Props) {
         </Link>
 
         <div className="grid gap-12 lg:grid-cols-2">
-          <div className="rounded border border-[#2d3a4d] bg-[#1a2332] overflow-hidden">
-            {product.image ? (
-              <img
-                src={product.image}
-                alt={product.name}
-                className="aspect-square w-full object-cover"
-              />
-            ) : (
-              <ProductImagePlaceholder
-                className="aspect-square w-full"
-                alt={product.name}
-              />
-            )}
-          </div>
+          <ProductMediaGallery
+            image={product.image}
+            imageAlt={product.name}
+            videoUrl={product.videoUrl}
+          />
 
           <div>
             <span className="text-xs font-medium uppercase tracking-wide text-[#64748b]">

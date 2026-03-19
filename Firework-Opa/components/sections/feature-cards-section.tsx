@@ -2,18 +2,21 @@ import Link from "next/link";
 
 const cards = [
   {
-    title: "Feuerwerksverkauf an Weiterverkäufer",
-    description:
-      "Professioneller Feuerwerksverkauf an Weiterverkäufer.",
+    title: "Vertrieb an Wiederverkäufer",
+    description: "Zuverlaessige Belieferung fuer Handel und Gewerbe.",
   },
   {
-    title: "Feuerwerksverkauf seit 1951",
+    title: "Tradition seit 1951",
+    description: "Erfahrung und Verkauf seit ueber sieben Jahrzehnten.",
+  },
+  {
+    title: "Verfuegbar",
     description:
-      "Verkauf seit über sieben Jahrzehnten.",
+      "Ganzjaehriger Verkauf mit persoenlicher Beratung.",
   },
   {
     title: "Zum Katalog",
-    description: "Übersicht unseres aktuellen Sortiments.",
+    description: "Unser aktuelles Sortiment im Ueberblick.",
     href: "/katalog",
     isLink: true,
   },
@@ -25,7 +28,7 @@ export function FeatureCardsSection() {
       <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
         {/* Dezente Trennlinie */}
         <div className="mb-16 h-px w-24 bg-[#2d3a4d]" />
-        <div className="grid gap-8 md:grid-cols-3 lg:gap-10">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {cards.map((card) => {
             const content = (
               <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#1a2332] p-8 lg:p-10 transition-all duration-300 ease-out hover:border-[#c9a227]/40 hover:bg-[#243044] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:-translate-y-1">

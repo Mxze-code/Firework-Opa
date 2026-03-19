@@ -21,9 +21,42 @@ export type Product = {
   durationSeconds?: number;
   heightMeters?: number;
   image: string | null;
+  videoUrl?: string;
 };
 
-export const products: Product[] = [
+const productImageFilesBySlug: Record<string, string> = {
+  "desert-rose": "desert-rose.png",
+  "flame-falls": "flame-falls.png",
+  "arche-nico": "arche-nico.png",
+  rhino: "rhino.png",
+  "paradise-beach": "paradise-beach.png",
+  hofnarr: "hofnarr.png",
+  pharaoh: "pharaoh.png",
+  flowergirls: "flowergirls.png",
+  "blacksmith-betty": "blacksmith-betty.png",
+  "cloud-chaser": "cloud-chaser.png",
+  donnerroehren: "donnerroehren.png",
+  inferno: "inferno.png",
+  bombenrohr: "bombenrohr.png",
+  helicopter: "helicopter.png",
+  feuerkasten: "feuerkasten.png",
+  "infinity-paradox": "infinity-paradox.png",
+  volltreffer: "volltreffer.png",
+  "rocket-strike": "rocket-strike.png",
+  "funky-diamonds": "funky-diamonds.png",
+  stardust: "stardust.png",
+  hamsterkauf: "hamsterkauf.png",
+  "lady-cracker": "lady-cracker.png",
+  stoertebeker: "stoertebeker.png",
+  "pyro-pack": "pyro-pack.png",
+  "wild-boys": "wild-boys.png",
+  "knallbonbon-26-cm": "knallbonbon-26-cm.png",
+  bengalfeuer: "bengalfeuer.png",
+};
+
+const PRODUCT_IMAGE_BASE_PATH = "/products/fireworks_all_cropped_white";
+
+const rawProducts: Product[] = [
   {
     id: "59301",
     slug: "desert-rose",
@@ -43,6 +76,7 @@ export const products: Product[] = [
     durationSeconds: 40,
     heightMeters: 30,
     image: "/products/59301_desert-rose.png",
+    videoUrl: "https://www.youtube.com/watch?v=7mpxQan_TKc",
   },
   {
     id: "59305",
@@ -58,6 +92,7 @@ export const products: Product[] = [
     durationSeconds: 35,
     heightMeters: 40,
     image: "/products/59305_flame-falls.png",
+    videoUrl: "https://www.youtube.com/watch?v=oLvZETIJyzo",
   },
   {
     id: "59350",
@@ -73,6 +108,7 @@ export const products: Product[] = [
     durationSeconds: 100,
     heightMeters: 30,
     image: "/products/59350_arche-nico.png",
+    videoUrl: "https://www.youtube.com/watch?v=mObL8SbXAK0",
   },
   {
     id: "05019",
@@ -501,6 +537,16 @@ export const products: Product[] = [
     image: "/products/07870_bengalfeuer.png",
   },
 ];
+
+export const products: Product[] = rawProducts.map((product) => {
+  const imageFile = productImageFilesBySlug[product.slug];
+  if (!imageFile) return product;
+
+  return {
+    ...product,
+    image: `${PRODUCT_IMAGE_BASE_PATH}/${imageFile}`,
+  };
+});
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug);
