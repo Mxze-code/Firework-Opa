@@ -99,12 +99,11 @@ export function CartRocketAddToCart() {
       const dy = P2.y - P0.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      const curveLift = clamp(dist * 0.18, 36, 120);
-      const direction = dy > 0 ? -1 : 1; // if target is below, curve upwards; otherwise curve downwards
-
+      // Straight flight: we avoid any noticeable curve so it reads as
+      // a straight, horizontal rocket shot across the header area.
       const P1 = {
-        x: (P0.x + P2.x) / 2 + clamp(dx * 0.04, -40, 40),
-        y: (P0.y + P2.y) / 2 + direction * curveLift,
+        x: (P0.x + P2.x) / 2,
+        y: (P0.y + P2.y) / 2,
       };
 
       // Rocket sizes (responsive-ish).
