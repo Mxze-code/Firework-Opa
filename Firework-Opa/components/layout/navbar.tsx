@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { useCart } from "@/lib/cart-context";
@@ -24,9 +25,13 @@ type CartParticle = {
 };
 
 export function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isNavVisible, setIsNavVisible] = useState(true);
   const { totalItems } = useCart();
+  const isHome = pathname === "/";
+  const lastScrollYRef = useRef(0);
 
   const [burstParticles, setBurstParticles] = useState<CartParticle[] | null>(null);
   const burstTimeoutRef = useRef<number | null>(null);
@@ -73,7 +78,27 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      setScrolled(currentY > 20);
+
+      // In der Nähe vom Seitenanfang immer sichtbar.
+      if (currentY <= 12) {
+        setIsNavVisible(true);
+        lastScrollYRef.current = currentY;
+        return;
+      }
+
+      const delta = currentY - lastScrollYRef.current;
+      // Kleine Scroll-Jitter ignorieren.
+      if (Math.abs(delta) < 6) return;
+
+      // Nach unten: ausblenden. Nach oben: wieder einblenden.
+      setIsNavVisible(delta < 0);
+      lastScrollYRef.current = currentY;
+    };
+
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -86,8 +111,16 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled ? "bg-[#0f1419]/95 backdrop-blur-sm py-3" : "bg-transparent py-4 md:py-5"
+      className={`sticky top-0 z-50 w-full transition-all duration-300 will-change-transform ${
+        isNavVisible ? "translate-y-0" : "-translate-y-full"
+      } ${
+        isHome
+          ? scrolled
+            ? "bg-transparent py-3"
+            : "bg-transparent py-4 md:py-5"
+          : scrolled
+            ? "bg-[#0f1419]/95 backdrop-blur-sm py-3"
+            : "bg-transparent py-4 md:py-5"
       }`}
     >
       <div className="flex w-full items-center justify-between px-6 md:px-10 lg:px-12 xl:px-16">
@@ -188,6 +221,12 @@ export function Navbar() {
           </svg>
         </button>
       </div>
+
+      {/* Feine Trennlinie unter der Header-Zeile – warm, in der Mitte etwas präsenter */}
+      <div
+        className={isHome ? "nav-header-divider nav-header-divider--line-only" : "nav-header-divider"}
+        aria-hidden
+      />
 
       {isOpen && (
         <div className="md:hidden border-t border-[#2d3a4d] bg-[#0f1419] px-6 py-4">

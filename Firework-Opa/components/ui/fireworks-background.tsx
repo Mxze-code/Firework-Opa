@@ -3,6 +3,12 @@
 import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
+function useLatest<T>(value: T) {
+  const ref = useRef(value);
+  ref.current = value;
+  return ref;
+}
+
 interface Particle {
   x: number;
   y: number;
@@ -26,35 +32,42 @@ interface Firework {
 export function FireworksBackground({
   children,
   className,
+  /** Ruhigere Szene: Explosionen eher mittig/unten, weniger Aktivität oben */
+  heroScene = false,
+  /** Optional: als feste Viewport-Ebene nutzen (Landing-Buehne). */
+  fixedViewport = false,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
+  heroScene?: boolean;
+  fixedViewport?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fireworksRef = useRef<Firework[]>([]);
   const animationFrameRef = useRef<number>(0);
   const lastFireworkTimeRef = useRef<number>(Date.now());
+  const heroSceneRef = useLatest(heroScene);
 
-  const colors = [
-    "#c9a227",
-    "#d4b03a",
-    "#94a3b8",
-    "#0ea5e9",
-    "#64748b",
-    "#f59e0b",
-    "#e2e8f0",
-  ];
+  // Warmes, gold-/amber-fokussiertes Feuerwerks-Feeling.
+  // Wichtig: kein "Neon" / keine Regenbogenfarben, sondern edel und kontrolliert.
+  const colors = ["#c9a227", "#d4b03a", "#f59e0b", "#fef3c7", "#fb7185", "#e2e8f0"];
 
   const createFirework = (x?: number, y?: number, targetY?: number) => {
     const canvas = canvasRef.current;
     if (!canvas || canvas.width === 0 || canvas.height === 0) return;
 
-    const startX = x ?? Math.random() * canvas.width;
+    const hs = heroSceneRef.current;
+    const w = canvas.width;
+    const h = canvas.height;
+
+    const startX = x ?? (hs ? w * (0.14 + Math.random() * 0.72) : Math.random() * w);
     const startY = canvas.height;
     const color = colors[Math.floor(Math.random() * colors.length)];
     const angle = (Math.random() * Math.PI) / 2 - Math.PI / 4;
-    const velocity = 6 + Math.random() * 4;
-    const target = targetY ?? canvas.height * (0.1 + Math.random() * 0.4);
+    const velocity = hs ? 5.2 + Math.random() * 3.2 : 6 + Math.random() * 4;
+    const target =
+      targetY ??
+      (hs ? h * (0.22 + Math.random() * 0.28) : h * (0.1 + Math.random() * 0.4));
 
     const firework: Firework = {
       x: startX,
@@ -73,11 +86,14 @@ export function FireworksBackground({
   };
 
   const explodeFirework = (firework: Firework) => {
-    const particleCount = 50 + Math.floor(Math.random() * 30);
+    const hs = heroSceneRef.current;
+    const particleCount = hs
+      ? 30 + Math.floor(Math.random() * 16)
+      : 50 + Math.floor(Math.random() * 30);
 
     for (let i = 0; i < particleCount; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const velocity = Math.random() * 4 + 1;
+      const velocity = (hs ? Math.random() * 2.8 + 0.75 : Math.random() * 4 + 1) * (hs ? 0.92 : 1);
 
       firework.particles.push({
         x: firework.x,
@@ -88,8 +104,8 @@ export function FireworksBackground({
           y: Math.sin(angle) * velocity * (0.5 + Math.random()),
         },
         alpha: 1,
-        lifetime: Math.random() * 25 + 25,
-        size: Math.random() * 2.2 + 1.4,
+        lifetime: (hs ? Math.random() * 16 + 18 : Math.random() * 25 + 25),
+        size: hs ? Math.random() * 1.35 + 0.85 : Math.random() * 2.2 + 1.4,
       });
     }
   };
@@ -103,7 +119,10 @@ export function FireworksBackground({
       return;
     }
 
-    ctx.fillStyle = "rgba(15, 20, 25, 0.07)";
+    // Etwas weniger "Hartes Clearing" => mehr feine Trails/Atmosphäre.
+    const hs = heroSceneRef.current;
+    /* Hero: etwas kräftigeres Clearing = weniger „Schmiere“, cleaner */
+    ctx.fillStyle = hs ? "rgba(15, 20, 25, 0.088)" : "rgba(15, 20, 25, 0.055)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const currentFireworks = fireworksRef.current;
@@ -115,10 +134,24 @@ export function FireworksBackground({
         firework.y += firework.velocity.y;
         firework.velocity.y += 0.1;
 
+        const inQuietSky = hs && firework.y < canvas.height * 0.24;
         ctx.beginPath();
-        ctx.arc(firework.x, firework.y, 3, 0, Math.PI * 2);
+        ctx.arc(
+          firework.x,
+          firework.y,
+          hs ? (inQuietSky ? 1.8 : 2.2) : inQuietSky ? 2.2 : 3,
+          0,
+          Math.PI * 2
+        );
+        if (hs) {
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.shadowBlur = inQuietSky ? 4 : 10;
+          ctx.shadowColor = firework.color;
+        }
         ctx.fillStyle = firework.color;
         ctx.fill();
+        ctx.shadowBlur = 0;
 
         if (
           firework.y <= firework.timeToExplode ||
@@ -146,11 +179,19 @@ export function FireworksBackground({
             continue;
           }
 
-          ctx.globalAlpha = particle.alpha;
+          const skyDim = hs && particle.y < canvas.height * 0.22;
+          ctx.globalAlpha = skyDim ? particle.alpha * 0.5 : particle.alpha;
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          if (hs) {
+            ctx.shadowBlur = 0;
+          } else {
+            ctx.shadowBlur = skyDim ? 3 + particle.size : 9 + particle.size * 1.5;
+            ctx.shadowColor = particle.color;
+          }
           ctx.fillStyle = particle.color;
           ctx.fill();
+          ctx.shadowBlur = 0;
           ctx.globalAlpha = 1;
         }
 
@@ -162,7 +203,9 @@ export function FireworksBackground({
     }
 
     const now = Date.now();
-    if (now - lastFireworkTimeRef.current > 1200 + Math.random() * 2500) {
+    const minGap = hs ? 2100 : 1200;
+    const span = hs ? 3400 : 2500;
+    if (now - lastFireworkTimeRef.current > minGap + Math.random() * span) {
       createFirework();
       lastFireworkTimeRef.current = now;
     }
@@ -182,8 +225,9 @@ export function FireworksBackground({
     updateCanvasSize();
     window.addEventListener("resize", updateCanvasSize);
 
-    for (let i = 0; i < 2; i++) {
-      setTimeout(() => createFirework(), i * 400);
+    const initialBursts = heroSceneRef.current ? 1 : 2;
+    for (let i = 0; i < initialBursts; i++) {
+      setTimeout(() => createFirework(), i * (heroSceneRef.current ? 700 : 400));
     }
     lastFireworkTimeRef.current = Date.now();
 
@@ -199,9 +243,16 @@ export function FireworksBackground({
   }, []);
 
   return (
-    <div className={cn("relative w-full h-full overflow-hidden", className)}>
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      <div className="relative z-10 w-full h-full">{children}</div>
+    <div
+      className={cn(
+        fixedViewport
+          ? "pointer-events-none fixed inset-0 overflow-hidden"
+          : "relative h-full w-full overflow-hidden",
+        className
+      )}
+    >
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+      {children ? <div className="relative z-10 h-full w-full">{children}</div> : null}
     </div>
   );
 }

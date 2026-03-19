@@ -1,20 +1,47 @@
+import Image from "next/image";
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function KontaktPage() {
   return (
     <div className="min-h-[60vh] py-16 md:py-24">
-      <div className="mx-auto max-w-7xl px-6 md:px-10 lg:px-12">
+      <div className="mx-auto max-w-6xl px-6 md:px-10 lg:px-12">
         <h1 className="font-heading text-3xl font-bold text-[#f0f4f8] md:text-4xl">
           Kontakt / Über mich
         </h1>
-        <div className="mt-8 space-y-4 text-[#94a3b8]">
-          <p>
-            <strong className="text-[#f0f4f8]">Hartmann UG & Co. KG</strong>
-          </p>
-          <p>Badergasse 55</p>
-          <p>96472 Rödental</p>
-          <p className="pt-4">Tel. 09563 4896</p>
-          <p>Fax 09563 729 3325</p>
-          <p>Mobil 0172 8616347</p>
-          <p className="pt-4">Handelsregister Coburg HRA 4727</p>
+        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
+          <div className="rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#64748b]">
+              Ansprechpartner
+            </p>
+            <p className="mt-3 text-lg font-semibold text-[#f0f4f8]">
+              Hartmann UG &amp; Co. KG
+            </p>
+
+            <div className="mt-6 space-y-4 text-[#94a3b8]">
+              <p>Badergasse 55</p>
+              <p>96472 Rödental</p>
+              <p className="pt-2">Tel. 09563 4896</p>
+              <p>Fax 09563 729 3325</p>
+              <p>Mobil 0172 8616347</p>
+              <p className="pt-3 text-sm">Handelsregister Coburg HRA 4727</p>
+            </div>
+          </div>
+
+          <div className="mx-auto w-full max-w-[320px]">
+            <div className="overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55 p-2">
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded">
+                <Image
+                  src={`${basePath}/ueber-mich.png`}
+                  alt="Portraitbild Über mich"
+                  fill
+                  className="object-cover object-[50%_40%]"
+                  priority
+                />
+              </div>
+            </div>
+            <p className="mt-3 text-center text-sm text-[#64748b]">Über mich</p>
+          </div>
         </div>
       </div>
     </div>

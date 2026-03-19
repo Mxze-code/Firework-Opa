@@ -21,7 +21,7 @@ export function AddToCartButton({
   const lastVibrateAtRef = useRef<number>(0);
 
   const base =
-    "inline-flex items-center justify-center font-medium transition-all duration-200 border border-[#2d3a4d] text-[#c9a227] hover:border-[#c9a227] hover:bg-[#c9a227]/10 hover:-translate-y-0.5";
+    "inline-flex items-center justify-center font-medium transition-all duration-200 border border-[#2d3a4d] text-[#c9a227] shadow-[0_0_0_1px_rgba(201,162,39,0.06)] hover:border-[#c9a227]/60 hover:bg-[#c9a227]/12 hover:shadow-[0_0_0_1px_rgba(201,162,39,0.18),0_18px_45px_rgba(0,0,0,0.35)] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c9a227]/45 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f1419]";
 
   const styles =
     variant === "compact" ? `px-3 py-1.5 text-sm ${base}` : `w-full px-4 py-3 text-sm ${base}`;
