@@ -10,6 +10,8 @@ const navItems = [
   { href: "/katalog", label: "Katalog" },
   { href: "/kontakt", label: "Kontakt / Über mich" },
 ];
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const logoSrc = `${basePath}/logo-hartmann.png?v=20260318`;
 
 type CartParticle = {
   dx: number;
@@ -94,7 +96,7 @@ export function Navbar() {
           className="flex items-center shrink-0 animate-logo-float transition-transform duration-300 hover:scale-[1.01]"
         >
           <img
-            src="/logo-hartmann.png?v=20260318"
+            src={logoSrc}
             alt="Hartmann UG & Co. KG"
             className="h-12 w-auto max-w-none object-contain md:h-14 lg:h-16 xl:h-[4.5rem]"
             width={360}

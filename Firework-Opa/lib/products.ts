@@ -54,7 +54,8 @@ const productImageFilesBySlug: Record<string, string> = {
   bengalfeuer: "bengalfeuer.png",
 };
 
-const PRODUCT_IMAGE_BASE_PATH = "/products/fireworks_all_cropped_white";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const PRODUCT_IMAGE_BASE_PATH = `${BASE_PATH}/products/fireworks_all_cropped_white`;
 
 const rawProducts: Product[] = [
   {
