@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getAllProductSlugs } from "@/lib/products";
 import { AddToCartButton } from "@/components/catalog/add-to-cart-button";
-import { ProductMediaGallery } from "@/components/catalog/product-media-gallery";
+import { ProductMediaGalleryWithUrl } from "@/components/catalog/product-media-gallery-with-url";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -39,7 +39,7 @@ export default async function ProductDetailPage({ params }: Props) {
         </Link>
 
         <div className="grid gap-12 lg:grid-cols-2">
-          <ProductMediaGallery
+          <ProductMediaGalleryWithUrl
             image={product.image}
             imageAlt={product.name}
             videoUrl={product.videoUrl}

@@ -1,0 +1,670 @@
+@import "tailwindcss";
+
+/* Ascend - Fantasy Pixel-Art Design System */
+:root {
+  /* Deep forest & nature palette */
+  --forest-deep: #0d1f0d;
+  --forest-dark: #142814;
+  --forest-mid: #1a3d1a;
+  --forest-light: #2d5a2d;
+  --moss: #3d6b3d;
+  --moss-light: #5a8f5a;
+  --stone-dark: #2a2a28;
+  --stone-mid: #3d3d3a;
+  --stone-light: #5c5c58;
+  --stone-pale: #8a8a84;
+  --parchment: #e8e0d4;
+  --parchment-warm: #f5efe6;
+  --gold: #c9a227;
+  --gold-light: #e6c84a;
+  --gold-glow: rgba(201, 162, 39, 0.35);
+  --gold-subtle: rgba(201, 162, 39, 0.12);
+
+  /* Semantic mapping for components */
+  --bg-primary: var(--forest-deep);
+  --bg-secondary: var(--forest-dark);
+  --bg-tertiary: var(--forest-mid);
+  --bg-elevated: var(--stone-dark);
+  --bg-card: var(--forest-dark);
+
+  --text-primary: var(--parchment);
+  --text-secondary: var(--stone-pale);
+  --text-muted: var(--stone-light);
+
+  --accent-primary: var(--gold);
+  --accent-secondary: var(--gold-light);
+  --accent-glow: var(--gold-glow);
+  --accent-subtle: var(--gold-subtle);
+
+  --xp-accent: var(--gold-light);
+  --xp-glow: var(--gold-glow);
+
+  --success: #4a9c4a;
+  --warning: #d4a84a;
+  --danger: #c94a4a;
+  --info: #4a7ac9;
+
+  --border-subtle: rgba(232, 224, 212, 0.08);
+  --border-default: rgba(232, 224, 212, 0.15);
+  --border-frame: var(--stone-mid);
+
+  --glow-accent: 0 0 20px var(--accent-glow);
+  --glow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-card: var(--bg-card);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-xp-gold: var(--xp-accent);
+  --font-sans: var(--font-dm-sans);
+  --font-pixel: var(--font-pixelify);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Illustrated lobby layout - fantasy reference scene */
+.illustrated-lobby {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.illustrated-lobby__scene {
+  position: absolute;
+  inset: 0;
+  background-image: url("/ascend-lobby.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: lobby-scene-drift 20s ease-in-out infinite alternate;
+}
+
+.illustrated-lobby__ambience {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  animation: lobby-scene-drift 20s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+.illustrated-lobby__fire,
+.illustrated-lobby__fire-core {
+  position: absolute;
+  left: 83.6%;
+  top: 59.4%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  mix-blend-mode: screen;
+}
+
+.illustrated-lobby__fire {
+  width: clamp(62px, 6.3vw, 94px);
+  height: clamp(78px, 8.6vw, 122px);
+  background:
+    radial-gradient(circle at 50% 85%, rgba(255, 242, 176, 0.98) 0%, rgba(255, 195, 92, 0.88) 33%, rgba(255, 114, 32, 0.58) 63%, rgba(255, 80, 0, 0) 100%);
+  animation: campfire-flicker 0.95s steps(2, end) infinite;
+}
+
+.illustrated-lobby__fire-core {
+  width: clamp(30px, 2.8vw, 46px);
+  height: clamp(44px, 4.2vw, 66px);
+  left: 83.6%;
+  top: 59.3%;
+  background:
+    radial-gradient(circle at 50% 80%, rgba(255, 250, 210, 0.96) 0%, rgba(255, 208, 118, 0.92) 40%, rgba(255, 132, 48, 0.62) 67%, rgba(255, 132, 48, 0) 100%);
+  animation: campfire-core-flicker 0.72s steps(2, end) infinite;
+}
+
+.illustrated-lobby__smoke {
+  position: absolute;
+  left: 83.1%;
+  top: 55.5%;
+  width: clamp(16px, 1.8vw, 22px);
+  height: clamp(16px, 1.8vw, 22px);
+  border-radius: 999px;
+  background: rgba(233, 233, 233, 0.45);
+  filter: blur(0.5px);
+}
+
+.illustrated-lobby__smoke--one {
+  animation: campfire-smoke 4.4s ease-in-out infinite;
+}
+
+.illustrated-lobby__smoke--two {
+  left: 84.2%;
+  top: 54.4%;
+  width: clamp(12px, 1.3vw, 16px);
+  height: clamp(12px, 1.3vw, 16px);
+  animation: campfire-smoke 4.9s ease-in-out 1.1s infinite;
+}
+
+@media (max-aspect-ratio: 1.25) {
+  .illustrated-lobby__fire,
+  .illustrated-lobby__fire-core {
+    left: 81.8%;
+    top: 60.2%;
+  }
+
+  .illustrated-lobby__smoke {
+    left: 81.3%;
+    top: 56.4%;
+  }
+
+  .illustrated-lobby__smoke--two {
+    left: 82.4%;
+    top: 55.4%;
+  }
+}
+
+.illustrated-lobby__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.06) 30%,
+      rgba(0, 0, 0, 0.18) 100%
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.25) 100%
+    );
+}
+
+.illustrated-lobby__overlay {
+  position: relative;
+  inset: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.5rem 1.5rem max(2.5rem, 5vh);
+}
+
+.illustrated-lobby__content {
+  width: 100%;
+  max-width: 460px;
+}
+
+@keyframes lobby-scene-drift {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    transform: scale(1.02) translateY(-0.6%);
+  }
+}
+
+@keyframes campfire-flicker {
+  0%,
+  100% {
+    opacity: 0.68;
+    transform: scale(1);
+  }
+  45% {
+    opacity: 0.98;
+    transform: scale(1.14);
+  }
+  70% {
+    opacity: 0.72;
+    transform: scale(0.92);
+  }
+}
+
+@keyframes campfire-core-flicker {
+  0%,
+  100% {
+    opacity: 0.82;
+    transform: scale(1);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.22);
+  }
+}
+
+@keyframes campfire-smoke {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.7);
+  }
+  20% {
+    opacity: 0.32;
+  }
+  70% {
+    opacity: 0.18;
+    transform: translate(8px, -44px) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(12px, -62px) scale(1.15);
+  }
+}
+
+/* Panel-frame: game-like bordered panels - wood/stone feel */
+.panel-frame {
+  border: 4px solid var(--stone-mid);
+  border-image: linear-gradient(
+    180deg,
+    var(--stone-light) 0%,
+    var(--stone-dark) 25%,
+    var(--stone-mid) 50%,
+    var(--stone-dark) 75%,
+    var(--stone-light) 100%
+  ) 1;
+  box-shadow:
+    inset 0 0 0 2px rgba(60, 45, 30, 0.3),
+    inset 2px 2px 0 rgba(232, 224, 212, 0.08),
+    0 6px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    180deg,
+    rgba(42, 42, 40, 0.95) 0%,
+    rgba(30, 30, 28, 0.98) 100%
+  );
+}
+
+.panel-frame-gold {
+  border: 4px solid var(--accent-primary);
+  box-shadow:
+    inset 0 0 0 2px rgba(201, 162, 39, 0.2),
+    inset 2px 2px 0 rgba(232, 224, 212, 0.1),
+    0 0 16px var(--accent-glow),
+    0 6px 20px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(
+    180deg,
+    rgba(42, 42, 40, 0.95) 0%,
+    rgba(30, 30, 28, 0.98) 100%
+  );
+}
+
+/* Game panel layout refinements */
+.game-panel {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-panel-inner {
+  padding: 2.25rem 2rem;
+  background: radial-gradient(
+      circle at top,
+      rgba(201, 162, 39, 0.12) 0,
+      transparent 45%
+    ),
+    radial-gradient(
+      circle at bottom,
+      rgba(0, 0, 0, 0.65) 0,
+      rgba(0, 0, 0, 0.9) 55%
+    );
+}
+
+.world-label {
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.5),
+    0 0 12px rgba(201, 162, 39, 0.35);
+}
+
+/* Game menu window - carved fantasy frame */
+.game-menu-window {
+  max-width: 28rem;
+  margin: 0 auto;
+  position: relative;
+}
+
+.game-menu-frame {
+  position: relative;
+  padding: 0;
+  background: linear-gradient(
+    180deg,
+    #2a2318 0%,
+    #201b13 40%,
+    #18130e 100%
+  );
+  border-radius: 0.55rem;
+  border: 3px solid #3d2f1d;
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(232, 224, 212, 0.08);
+}
+
+.game-menu-frame::before,
+.game-menu-frame::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(201, 162, 39, 0.42);
+  pointer-events: none;
+}
+
+.game-menu-frame::after {
+  inset: 8px;
+  border-color: rgba(0, 0, 0, 0.58);
+}
+
+.game-menu-header {
+  position: relative;
+  padding: 0.55rem 0.75rem 0.15rem;
+}
+
+.game-menu-header-inner {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.42rem 1.1rem;
+  background: linear-gradient(
+    180deg,
+    #4a3924 0%,
+    #3a2c1b 45%,
+    #2a2116 100%
+  );
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(201, 162, 39, 0.24);
+}
+
+.game-menu-title {
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--parchment);
+}
+
+.game-menu-subtitle {
+  margin-top: 0.125rem;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(232, 224, 212, 0.7);
+}
+
+.game-menu-body {
+  padding: 1.2rem 1.2rem 1.35rem;
+}
+
+/* Game buttons - fantasy menu style */
+.game-button {
+  border-radius: 0.35rem;
+  border-width: 0;
+  border-style: solid;
+  position: relative;
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(232, 224, 212, 0.08);
+}
+
+.game-button-primary {
+  background: linear-gradient(
+    180deg,
+    #f2d665 0%,
+    #d7b742 40%,
+    #c9a227 100%
+  );
+  color: #2a1c0c;
+  border-color: rgba(121, 84, 21, 0.5);
+}
+
+.game-button-primary:hover {
+  background: linear-gradient(
+    180deg,
+    #ffe47b 0%,
+    #e1c656 40%,
+    #d2ad32 100%
+  );
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.9),
+    0 0 18px rgba(201, 162, 39, 0.45);
+}
+
+.game-button-secondary {
+  background: linear-gradient(
+    180deg,
+    #3b3224 0%,
+    #2a2419 45%,
+    #211b13 100%
+  );
+  color: var(--parchment);
+  border-color: rgba(232, 224, 212, 0.18);
+}
+
+.game-button-secondary:hover {
+  background: linear-gradient(
+    180deg,
+    #4a3f2e 0%,
+    #332a1e 45%,
+    #241d14 100%
+  );
+}
+
+.game-button-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.game-button-ghost:hover {
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text-primary);
+}
+
+.game-button-danger {
+  background: linear-gradient(180deg, #e46767 0%, #c94a4a 100%);
+  color: #fff7f7;
+  border-color: rgba(80, 16, 16, 0.6);
+}
+
+/* Menu-style inputs */
+.game-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.game-input-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.game-input-shell {
+  position: relative;
+  padding: 0.125rem;
+  border-radius: 0.35rem;
+  background: radial-gradient(
+    circle at top,
+    rgba(201, 162, 39, 0.18) 0,
+    rgba(0, 0, 0, 0.9) 60%
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(232, 224, 212, 0.12),
+    0 6px 14px rgba(0, 0, 0, 0.85);
+}
+
+.game-input {
+  width: 100%;
+  border-radius: 0.22rem;
+  border: 1px solid rgba(70, 60, 46, 0.9);
+  background: linear-gradient(
+    180deg,
+    #25201a 0%,
+    #1b1711 100%
+  );
+  padding: 0.6rem 0.9rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* Reusable in-app fantasy cards */
+.fantasy-card {
+  border: 2px solid #3d2f1d;
+  border-radius: 0.6rem;
+  background: linear-gradient(180deg, #221d16 0%, #1a1611 100%);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.45),
+    inset 0 0 0 1px rgba(201, 162, 39, 0.2);
+}
+
+.fantasy-card-header {
+  font-family: var(--font-pixelify), system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--parchment);
+}
+
+.game-input::placeholder {
+  color: var(--text-muted);
+}
+
+.game-input:focus-visible {
+  outline: none;
+  border-color: rgba(201, 162, 39, 0.9);
+  box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.8);
+}
+
+/* World panel - embedded in world, parchment/wood feel */
+.world-panel {
+  background: linear-gradient(
+    180deg,
+    rgba(42, 38, 30, 0.98) 0%,
+    rgba(35, 32, 26, 0.99) 100%
+  );
+  border: 4px solid var(--stone-mid);
+  box-shadow:
+    inset 0 0 0 1px rgba(232, 224, 212, 0.06),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Pixel-style corners for decorative panels */
+.panel-corner {
+  position: relative;
+}
+.panel-corner::before,
+.panel-corner::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--gold);
+  opacity: 0.6;
+}
+.panel-corner::before {
+  top: 4px;
+  left: 4px;
+  border-right: none;
+  border-bottom: none;
+}
+.panel-corner::after {
+  top: 4px;
+  right: 4px;
+  border-left: none;
+  border-bottom: none;
+}
+
+/* Ambient motion keyframes */
+@keyframes ambient-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes ambient-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes ambient-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes progress-fill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes xp-gain {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-ambient-float {
+  animation: ambient-float 4s ease-in-out infinite;
+}
+
+.animate-ambient-glow {
+  animation: ambient-glow 3s ease-in-out infinite;
+}
+
+.animate-xp-gain {
+  animation: xp-gain 0.4s ease-out;
+}
+
+.glow-accent {
+  box-shadow: var(--glow-accent);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--stone-mid);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--stone-light);
+}

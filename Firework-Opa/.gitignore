@@ -13,6 +13,9 @@ yarn-error.log*
 # Local env
 .env*.local
 
+# Local dev
+.dev-lock.json
+
 # IDE
 .idea/
 .vscode/

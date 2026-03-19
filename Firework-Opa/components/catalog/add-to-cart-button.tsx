@@ -32,7 +32,7 @@ export function AddToCartButton({
 
       const isMobile = window.innerWidth < 640;
 
-      // Mobile-only haptic feedback.
+      // Mobile-only haptic feedback (kurzer Impuls).
       // Keep it short and unobtrusive; never affect desktop.
       try {
         const navAny = navigator as any;
@@ -58,33 +58,14 @@ export function AddToCartButton({
         // ignore: vibration is an enhancement
       }
 
-      if (isMobile) {
-        // Mobile: no rocket flight. Instead trigger the elegant full-screen
-        // fireworks burst (CartScreenBurst listens to this event on mobile).
-        const cartEl = document.querySelector(
-          "[data-cart-icon]"
-        ) as HTMLElement | null;
-        const rect = cartEl?.getBoundingClientRect();
-        const originX =
-          rect != null ? rect.left + rect.width / 2 : window.innerWidth / 2;
-        const originY =
-          rect != null ? rect.top + rect.height / 2 : window.innerHeight / 2;
-
-        window.dispatchEvent(
-          new CustomEvent("cart:burst", {
-            detail: { originX, originY },
-          })
-        );
-      } else {
-        // Desktop: keep existing rocket animation.
-        window.dispatchEvent(
-          new CustomEvent("cart:rocket-add", {
-            detail: {
-              productId: product.id,
-            },
-          })
-        );
-      }
+      // Gleiches Feedback wie früher: Logo fliegt zum Warenkorb (auch mobil).
+      window.dispatchEvent(
+        new CustomEvent("cart:rocket-add", {
+          detail: {
+            productId: product.id,
+          },
+        })
+      );
     },
     [addItem, product, quantity]
   );

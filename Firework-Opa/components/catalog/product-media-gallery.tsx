@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ProductImagePlaceholder } from "./product-image-placeholder";
 
 type ProductMediaGalleryProps = {
   image: string | null;
   imageAlt: string;
   videoUrl?: string;
+  /** z. B. von URL ?video=1 – öffnet direkt das eingebettete Video */
+  initialShowVideo?: boolean;
 };
 
 type MediaItem =
@@ -23,12 +25,9 @@ function getYouTubeEmbedUrl(url: string): string | null {
       const v = raw.trim().toLowerCase();
       if (!v) return null;
 
-      // Accept plain seconds: "90"
       if (/^\d+$/.test(v)) return Number(v);
 
-      // Accept "1s", "2m", "1h2m3s", "1m30s"
-      const re =
-        /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i;
+      const re = /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i;
       const m = v.match(re);
       if (!m) return null;
       const h = m[1] ? Number(m[1]) : 0;
@@ -39,7 +38,6 @@ function getYouTubeEmbedUrl(url: string): string | null {
     };
 
     const getStartFromParams = (): number | null => {
-      // YouTube commonly uses `t=` or `start=`.
       const t = parsed.searchParams.get("t");
       const start = parsed.searchParams.get("start");
       return parseYouTubeStartSeconds(start ?? t);
@@ -67,7 +65,10 @@ export function ProductMediaGallery({
   image,
   imageAlt,
   videoUrl,
+  initialShowVideo = false,
 }: ProductMediaGalleryProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
+
   const media = useMemo<MediaItem[]>(() => {
     const items: MediaItem[] = [{ type: "image", src: image, alt: imageAlt }];
     if (videoUrl) {
@@ -77,15 +78,39 @@ export function ProductMediaGallery({
     return items;
   }, [image, imageAlt, videoUrl]);
 
+  const videoIndex = useMemo(
+    () => media.findIndex((m) => m.type === "video"),
+    [media]
+  );
+
   const [activeIndex, setActiveIndex] = useState(0);
   const active = media[activeIndex];
   const hasMultipleMedia = media.length > 1;
 
-  const showPrevious = () => setActiveIndex((prev) => (prev - 1 + media.length) % media.length);
-  const showNext = () => setActiveIndex((prev) => (prev + 1) % media.length);
+  useEffect(() => {
+    if (!initialShowVideo || videoIndex < 0) return;
+    setActiveIndex(videoIndex);
+  }, [initialShowVideo, videoIndex]);
+
+  useEffect(() => {
+    if (!initialShowVideo || videoIndex < 0) return;
+    const id = window.setTimeout(() => {
+      rootRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
+    return () => window.clearTimeout(id);
+  }, [initialShowVideo, videoIndex]);
+
+  const showPrevious = () =>
+    setActiveIndex((prev) => (prev - 1 + media.length) % media.length);
+  const showNext = () =>
+    setActiveIndex((prev) => (prev + 1) % media.length);
 
   return (
-    <div className="rounded border border-[#2d3a4d] bg-[#1a2332] p-4 md:p-6">
+    <div
+      ref={rootRef}
+      id="product-media-gallery"
+      className="rounded border border-[#2d3a4d] bg-[#1a2332] p-4 md:p-6"
+    >
       <div className="relative h-[22rem] w-full rounded border border-[#dbe3ec] bg-[#f8fafc] p-5 md:h-[28rem] md:p-8">
         {active.type === "image" ? (
           active.src ? (
@@ -147,7 +172,11 @@ export function ProductMediaGallery({
                     ? "border-[#c9a227] bg-[#c9a227]"
                     : "border-[#64748b] bg-transparent hover:border-[#94a3b8]"
                 }`}
-                aria-label={item.type === "image" ? "Zum Produktbild wechseln" : "Zum Produktvideo wechseln"}
+                aria-label={
+                  item.type === "image"
+                    ? "Zum Produktbild wechseln"
+                    : "Zum Produktvideo wechseln"
+                }
               />
             );
           })}

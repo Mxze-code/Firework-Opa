@@ -63,16 +63,6 @@ export function CartRocketAddToCart() {
       const impactEl = impactRef.current;
       if (!rocketEl || !impactEl) return;
 
-      // Mobile: disable rocket flight entirely.
-      // Mobile feedback is handled by AddToCartButton -> cart:burst
-      // (full-screen fireworks via CartScreenBurst).
-      if (window.innerWidth < 640) {
-        rocketEl.style.opacity = "0";
-        rocketEl.style.pointerEvents = "none";
-        if (rafRef.current != null) window.cancelAnimationFrame(rafRef.current);
-        return;
-      }
-
       const logoEl = document.querySelector("[data-hartmann-logo]") as HTMLElement | null;
       const cartEl = document.querySelector("[data-cart-icon]") as HTMLElement | null;
       if (!logoEl || !cartEl) return;
