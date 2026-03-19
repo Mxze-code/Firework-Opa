@@ -3,6 +3,7 @@ import { Merriweather, Source_Sans_3 } from "next/font/google";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AppProviders } from "@/components/providers/app-providers";
+import { CartScreenBurst } from "@/components/cart/cart-screen-burst";
 import "./globals.css";
 
 const merriweather = Merriweather({
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <AppProviders>
           <Navbar />
+          <CartScreenBurst />
           <main>{children}</main>
           <Footer />
         </AppProviders>

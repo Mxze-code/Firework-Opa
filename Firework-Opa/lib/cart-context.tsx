@@ -64,11 +64,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, hydrated]);
 
   const addItem = useCallback((product: Product, quantity = 1) => {
-    // Partikel-Explosion am Cart-Icon auslösen (für dezente Interaktion)
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("cart:burst"));
-    }
-
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
       if (existing) {

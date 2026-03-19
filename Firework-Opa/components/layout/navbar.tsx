@@ -41,9 +41,9 @@ export function Navbar() {
     const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
     if (reduceMotion) return;
 
-    const colors = ["#c9a227", "#d4b03a", "#f6e9c7", "#fff7e0"];
-    const count = 12;
-    const maxDist = 18; // klein & edel
+    const colors = ["#f8fafc", "#c9a227", "#d4b03a"];
+    const count = 10;
+    const maxDist = 22; // klein & edel, aber spürbar
 
     const particles: CartParticle[] = Array.from({ length: count }).map(
       (_, i) => {
