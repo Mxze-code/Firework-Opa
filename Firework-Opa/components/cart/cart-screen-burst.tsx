@@ -19,6 +19,8 @@ type Particle = {
   sparkle: number; // 0..1
   prevX: number;
   prevY: number;
+  spawnAtMs: number;
+  started: boolean;
 };
 
 function clamp(n: number, min: number, max: number) {
@@ -31,6 +33,8 @@ export function CartScreenBurst() {
   const particlesRef = useRef<Particle[]>([]);
   const startAtRef = useRef<number>(0);
   const burstIdRef = useRef<number>(0);
+  const lastFrameAtRef = useRef<number>(0);
+  const originRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const palette = useMemo(
     () => [
@@ -71,21 +75,59 @@ export function CartScreenBurst() {
       return x * x * (3 - 2 * x); // smoothstep
     };
 
-    const drawFrame = (now: number, burstIdAtStart: number) => {
+      const drawFrame = (now: number, burstIdAtStart: number) => {
       if (burstIdRef.current !== burstIdAtStart) return;
 
       const t = now - startAtRef.current;
-      const durationMs = 650;
+      const durationMs = 820; // cover the whole multi-burst sequence
       const progress = clamp(t / durationMs, 0, 1);
 
       // Clear fully; then use additive blending for the glow.
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       ctx.globalCompositeOperation = "lighter";
 
-      const gravity = 120; // px/s^2 (gentle)
-      const dt = 1 / 60; // approx stable integration; burst is short
+      const gravity = 110; // px/s^2 (gentle)
+
+      const dt = (() => {
+        const last = lastFrameAtRef.current || now;
+        lastFrameAtRef.current = now;
+        const s = (now - last) / 1000;
+        return clamp(s, 0, 0.05);
+      })();
+
+      // Subtle "flash" rings at each burst time to make it feel like fireworks.
+      // We draw them as simple additive circles (no heavy effects).
+      const flashTimes = [0, 170, 350];
+      const flashWindow = 95;
+      for (const ft of flashTimes) {
+        const dtFlash = t - ft;
+        if (dtFlash < 0 || dtFlash > flashWindow) continue;
+        const lt = 1 - dtFlash / flashWindow; // 1 -> 0
+        const alpha = clamp(lt, 0, 1) * 0.35 * (1 - progress * 0.35);
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = "rgba(201,162,39,0.9)";
+        ctx.lineWidth = 1 + lt * 2.2;
+        ctx.beginPath();
+        ctx.arc(
+          originRef.current.x,
+          originRef.current.y,
+          18 + lt * 60,
+          0,
+          Math.PI * 2
+        );
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
 
       for (const p of particlesRef.current) {
+        if (t < p.spawnAtMs) continue;
+
+        if (!p.started) {
+          p.started = true;
+          p.prevX = p.x;
+          p.prevY = p.y;
+        }
+
         if (p.ageMs >= p.lifeMs) continue;
 
         p.prevX = p.x;
@@ -141,44 +183,62 @@ export function CartScreenBurst() {
       burstIdRef.current += 1;
       const burstIdAtStart = burstIdRef.current;
       startAtRef.current = now;
+      lastFrameAtRef.current = now;
 
       const detail = (e as CustomEvent<CartBurstDetail>).detail ?? {};
       const originX = typeof detail.originX === "number" ? detail.originX : window.innerWidth / 2;
       const originY = typeof detail.originY === "number" ? detail.originY : window.innerHeight / 2;
+      originRef.current = { x: originX, y: originY };
 
       particlesRef.current = [];
 
-      // Elegant "fireworks sparks": fewer particles, larger glow, less chaos.
-      const count = 160;
-      const baseSpeed = 520; // px/s
-      const speedJitter = 320;
+      // Multi-burst: 2–3 short "firework reactions"
+      const burstTimes = [0, 170, 350];
+      const burstsEnabled = burstTimes.length;
 
-      for (let i = 0; i < count; i++) {
-        const u = Math.random();
-        const angle = Math.random() * Math.PI * 2;
+      for (let b = 0; b < burstsEnabled; b++) {
+        const spawnAtMs = burstTimes[b];
 
-        // Slightly bias upwards to feel more like a burst rather than a falling confetti.
-        const upBias = 0.35 + Math.random() * 0.3;
-        const vx = Math.cos(angle) * (baseSpeed + u * speedJitter);
-        const vy = Math.sin(angle) * (baseSpeed + u * speedJitter) - (baseSpeed * upBias) / 2;
+        // A bit fewer particles per burst for a cleaner, higher-end look.
+        const count = 110;
+        const baseSpeed = 600; // px/s
+        const speedJitter = 360;
 
-        const size = 0.9 + Math.random() * 2.1;
-        const lifeMs = 420 + Math.random() * 260;
-        const sparkle = Math.random();
+        for (let i = 0; i < count; i++) {
+          const u = Math.random();
+          const angle = Math.random() * Math.PI * 2;
 
-        particlesRef.current.push({
-          x: originX,
-          y: originY,
-          vx,
-          vy,
-          size,
-          lifeMs,
-          ageMs: 0,
-          huePick: Math.random(),
-          sparkle,
-          prevX: originX,
-          prevY: originY,
-        });
+          // Bias upwards so it reads as a burst, not a confetti rain.
+          const upBias = 0.42 + Math.random() * 0.25;
+          const speed = baseSpeed + u * speedJitter;
+          const vx = Math.cos(angle) * speed;
+          const vy = Math.sin(angle) * speed - (baseSpeed * upBias) / 1.9;
+
+          // Larger initial sparks, shorter life.
+          const size = 0.8 + Math.random() * 2.0;
+          const lifeMs = 320 + Math.random() * 240;
+          const sparkle = Math.random();
+
+          // Slightly vary the origin for a natural "second burst" feel.
+          const ox = originX + (Math.random() - 0.5) * 40;
+          const oy = originY + (Math.random() - 0.5) * 26;
+
+          particlesRef.current.push({
+            x: ox,
+            y: oy,
+            vx,
+            vy,
+            size,
+            lifeMs,
+            ageMs: 0,
+            huePick: Math.random(),
+            sparkle,
+            prevX: ox,
+            prevY: oy,
+            spawnAtMs,
+            started: false,
+          });
+        }
       }
 
       if (rafRef.current != null) {
