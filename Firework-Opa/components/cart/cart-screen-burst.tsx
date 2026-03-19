@@ -202,6 +202,10 @@ export function CartScreenBurst() {
 
     const onBurst = (e: Event) => {
       if (prefersReducedMotion) return;
+      // Only run the full-screen fireworks on mobile.
+      // Desktop keeps the compact cart icon burst.
+      const isMobile = window.innerWidth < 640;
+      if (!isMobile) return;
 
       const now = performance.now();
       burstIdRef.current += 1;

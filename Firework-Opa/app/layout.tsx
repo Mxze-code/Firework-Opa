@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { AppProviders } from "@/components/providers/app-providers";
 import { CartRocketAddToCart } from "@/components/cart/cart-rocket-add-to-cart";
+import { CartScreenBurst } from "@/components/cart/cart-screen-burst";
 import "./globals.css";
 
 const merriweather = Merriweather({
@@ -37,6 +38,7 @@ export default function RootLayout({
         <AppProviders>
           <Navbar />
           <CartRocketAddToCart />
+          <CartScreenBurst />
           <main>{children}</main>
           <Footer />
         </AppProviders>

@@ -99,22 +99,33 @@ export function CartRocketAddToCart() {
       const dy = P2.y - P0.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
 
-      // Straight flight: we avoid any noticeable curve so it reads as
-      // a straight, horizontal rocket shot across the header area.
+      // Straight flight: we avoid any noticeable curve so it reads as a
+      // straight, horizontal rocket shot across the header area.
+      const isMobile = window.innerWidth < 640;
+
+      // Mobile: compact impulse instead of "full travel" across the screen.
+      // We still trigger the final spark/impact at the cart icon (P2),
+      // but the rocket itself only moves a short distance (pathEnd).
+      const rocketScale = isMobile ? 0.72 : 1;
+      const pathEnd = isMobile
+        ? {
+            x: P0.x + dx * 0.30,
+            y: P0.y + dy * 0.05,
+          }
+        : P2;
+
       const P1 = {
-        x: (P0.x + P2.x) / 2,
-        y: (P0.y + P2.y) / 2,
+        x: (P0.x + pathEnd.x) / 2,
+        y: (P0.y + pathEnd.y) / 2,
       };
 
-      // Rocket sizes (responsive-ish).
-      const isMobile = window.innerWidth < 640;
-      const durationMs = isMobile ? 760 : 860;
+      const durationMs = isMobile ? 420 : 860;
 
       // Initial positioning
       rocketEl.style.opacity = "1";
       rocketEl.style.pointerEvents = "none";
-      rocketEl.style.width = `${logoRect.width}px`;
-      rocketEl.style.height = `${logoRect.height}px`;
+      rocketEl.style.width = `${logoRect.width * rocketScale}px`;
+      rocketEl.style.height = `${logoRect.height * rocketScale}px`;
       rocketEl.style.transform = `translate3d(${P0.x}px, ${P0.y}px, 0) translate(-50%, -50%)`;
 
       impactEl.style.opacity = "0";
@@ -127,8 +138,8 @@ export function CartRocketAddToCart() {
         const t = clamp((now - startAt) / durationMs, 0, 1);
         const te = easeInOutCubic(t);
 
-        const pos = getQuadraticBezierPoint(te, P0, P1, P2);
-        const tangent = getQuadraticBezierTangent(te, P0, P1, P2);
+        const pos = getQuadraticBezierPoint(te, P0, P1, pathEnd);
+        const tangent = getQuadraticBezierTangent(te, P0, P1, pathEnd);
         const angle = (Math.atan2(tangent.y, tangent.x) * 180) / Math.PI;
 
         // Important: no rotation / no skewed orientation. Keep it horizontal like the header mark.
@@ -157,9 +168,14 @@ export function CartRocketAddToCart() {
         impactEl.offsetHeight;
         impactEl.classList.add("cart-rocket-impact");
 
-        // Trigger the existing small cart feedback burst.
-        // navbar listens to this event.
-        window.dispatchEvent(new Event("cart:burst"));
+        // Trigger the cart feedback burst.
+        // On mobile, this will additionally light up the full-screen fireworks.
+        // Navbar also listens to `cart:burst`.
+        window.dispatchEvent(
+          new CustomEvent("cart:burst", {
+            detail: { originX: P2.x, originY: P2.y },
+          })
+        );
 
         // Fade out rocket quickly after impact.
         rocketEl.style.opacity = "0";
