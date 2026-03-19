@@ -44,6 +44,7 @@ export function CartRocketAddToCart() {
   const impactRef = useRef<HTMLDivElement | null>(null);
   const runIdRef = useRef(0);
   const rafRef = useRef<number | null>(null);
+  const flameRef = useRef<SVGGElement | null>(null);
   const reduceMotionRef = useRef(false);
 
   useEffect(() => {
@@ -124,6 +125,16 @@ export function CartRocketAddToCart() {
         const scale = rocketScale * (1 + 0.02 * Math.sin(Math.PI * t));
         rocketEl.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%) rotate(${angle}deg) scale(${scale})`;
 
+        // Flame intensity: stronger near the beginning, then fades smoothly.
+        const flame = flameRef.current;
+        if (flame) {
+          const flameT = 1 - t;
+          const opacity = 0.35 + 0.55 * flameT;
+          const flameScale = 0.9 + 0.25 * Math.sin(Math.PI * (1 - t));
+          flame.style.opacity = String(opacity);
+          flame.style.transform = `scale(${flameScale})`;
+        }
+
         if (t < 1) {
           rafRef.current = window.requestAnimationFrame(step);
           return;
@@ -165,43 +176,73 @@ export function CartRocketAddToCart() {
           opacity: 0,
         }}
       >
-        <svg width="68" height="68" viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="76"
+          height="76"
+          viewBox="0 0 120 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Rocket body */}
+          <defs>
+            <linearGradient id="r_gold" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#F8FAFC" stopOpacity="0.95" />
+              <stop offset="0.5" stopColor="#C9A227" stopOpacity="0.9" />
+              <stop offset="1" stopColor="#D4B03A" stopOpacity="0.6" />
+            </linearGradient>
+            <radialGradient id="f_gold" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(60 92) rotate(90) scale(28 26)">
+              <stop offset="0" stopColor="#F8FAFC" stopOpacity="0.95" />
+              <stop offset="0.35" stopColor="#C9A227" stopOpacity="0.75" />
+              <stop offset="1" stopColor="#C9A227" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Flame group (behind rocket) */}
+          <g ref={flameRef} style={{ opacity: 0.5, transformOrigin: "60px 95px" }}>
+            <path
+              d="M60 92C48 104 45 112 60 114C75 112 72 104 60 92Z"
+              fill="url(#f_gold)"
+            />
+            <path
+              d="M60 92C53 100 50 106 60 108C70 106 67 100 60 92Z"
+              fill="#C9A227"
+              opacity="0.45"
+            />
+          </g>
+
+          {/* Fins */}
+          <path d="M39 78L30 92L48 92L39 78Z" fill="#C9A227" opacity="0.25" />
+          <path d="M81 78L72 92L90 92L81 78Z" fill="#C9A227" opacity="0.25" />
+
+          {/* Nose cone */}
           <path
-            d="M34 7C42.5 14.5 48 24.5 50 34C48 43.5 42.5 53.5 34 61C25.5 53.5 20 43.5 18 34C20 24.5 25.5 14.5 34 7Z"
-            fill="rgba(201,162,39,0.12)"
+            d="M60 10C45 28 43 42 43 55C43 68 48 78 60 86C72 78 77 68 77 55C77 42 75 28 60 10Z"
+            fill="url(#r_gold)"
+            opacity="0.9"
             stroke="#F8FAFC"
-            strokeWidth="1.3"
+            strokeOpacity="0.65"
+            strokeWidth="1.2"
           />
+
+          {/* Main body outline */}
           <path
-            d="M34 12C40.7 18.8 44.7 26.5 46 34C44.7 41.5 40.7 49.2 34 56C27.3 49.2 23.3 41.5 22 34C23.3 26.5 27.3 18.8 34 12Z"
-            fill="rgba(201,162,39,0.18)"
+            d="M60 18C48 34 48 48 48 58C48 69 52 76 60 81C68 76 72 69 72 58C72 48 72 34 60 18Z"
+            stroke="#C9A227"
+            strokeOpacity="0.75"
+            strokeWidth="1.2"
           />
+
+          {/* Window / label */}
+          <circle cx="60" cy="57" r="8.5" fill="rgba(248,250,252,0.12)" stroke="#F8FAFC" strokeOpacity="0.55" strokeWidth="1.1" />
+          <circle cx="60" cy="57" r="4.2" fill="#C9A227" opacity="0.55" />
+
+          {/* Exhaust shimmer */}
           <path
-            d="M30 33.5C30 38.1 33 41.2 34 42C35 41.2 38 38.1 38 33.5C38 29.2 35 26 34 25.2C33 26 30 29.2 30 33.5Z"
-            fill="#C9A227"
+            d="M52 92C56 86 64 86 68 92"
             stroke="#F8FAFC"
-            strokeWidth="0.8"
-            opacity="0.95"
-          />
-          <path
-            d="M34 7C27 16 26 25 26 34C26 43 27 52 34 61"
-            stroke="#D4B03A"
-            strokeWidth="1.1"
-            opacity="0.55"
-          />
-          <path
-            d="M18 34L6 30L10 41L18 34Z"
-            fill="rgba(201,162,39,0.16)"
-            stroke="#F8FAFC"
-            strokeWidth="0.9"
-            opacity="0.95"
-          />
-          <path
-            d="M50 34L62 30L58 41L50 34Z"
-            fill="rgba(201,162,39,0.16)"
-            stroke="#F8FAFC"
-            strokeWidth="0.9"
-            opacity="0.95"
+            strokeOpacity="0.35"
+            strokeWidth="1"
+            strokeLinecap="round"
           />
         </svg>
       </div>
