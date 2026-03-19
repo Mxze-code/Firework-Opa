@@ -18,6 +18,11 @@ export default function KatalogPage() {
             Unser Sortiment an Feuerwerksartikeln. Traditionelle Qualität und
             bewährte Produkte für Weiterverkäufer.
           </p>
+
+          <p className="mt-4 max-w-2xl text-sm text-[#94a3b8]">
+            Produkte auswählen, in den Warenkorb legen und anschließend eine
+            Anfrage senden.
+          </p>
         </header>
 
         <ProductGrid products={products} />

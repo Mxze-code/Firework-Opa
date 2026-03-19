@@ -130,6 +130,7 @@ const rawProducts: Product[] = [
     durationSeconds: 25,
     heightMeters: 30,
     image: "/products/05019_rhino.png",
+    videoUrl: "https://www.youtube.com/watch?v=tT6x2HSA93Q",
   },
   {
     id: "05035",
@@ -151,6 +152,7 @@ const rawProducts: Product[] = [
     durationSeconds: 25,
     heightMeters: 40,
     image: null,
+    videoUrl: "https://www.youtube.com/watch?v=yRiLestO7UM",
   },
   {
     id: "05045",
@@ -173,6 +175,7 @@ const rawProducts: Product[] = [
     durationSeconds: 35,
     heightMeters: 40,
     image: null,
+    videoUrl: "https://www.youtube.com/watch?v=JcS1YB8R7F8",
   },
   {
     id: "05128",
@@ -195,6 +198,7 @@ const rawProducts: Product[] = [
     durationSeconds: 80,
     heightMeters: 50,
     image: null,
+    videoUrl: "https://www.youtube.com/watch?v=DvAOLuzzJ6A",
   },
   {
     id: "05762",
@@ -217,6 +221,7 @@ const rawProducts: Product[] = [
     durationSeconds: 45,
     heightMeters: 35,
     image: "/products/05762_flowergirls.png",
+    videoUrl: "https://www.youtube.com/watch?v=e6SFL-MdPDA",
   },
   {
     id: "05768",
@@ -239,6 +244,7 @@ const rawProducts: Product[] = [
     durationSeconds: 25,
     heightMeters: 60,
     image: null,
+    videoUrl: "https://www.youtube.com/watch?v=x_FsWrnNmuY",
   },
   {
     id: "59451",
@@ -259,6 +265,7 @@ const rawProducts: Product[] = [
     durationSeconds: 60,
     heightMeters: 4,
     image: "/products/59451_cloud-chaser.png",
+    videoUrl: "https://www.youtube.com/watch?v=Fes_ycnx9g4",
   },
   {
     id: "03320",
@@ -278,6 +285,7 @@ const rawProducts: Product[] = [
     ],
     heightMeters: 35,
     image: "/products/03320_donnerroehren.png",
+    videoUrl: "https://www.youtube.com/watch?v=tcXpw9fFXj0&t=1s",
   },
   {
     id: "03376",
@@ -299,6 +307,7 @@ const rawProducts: Product[] = [
     durationSeconds: 40,
     heightMeters: 5,
     image: "/products/03376_inferno.png",
+    videoUrl: "https://www.youtube.com/watch?v=a6y-zEqIbDk",
   },
   {
     id: "03394",
@@ -318,6 +327,7 @@ const rawProducts: Product[] = [
     durationSeconds: 20,
     heightMeters: 50,
     image: "/products/03394_bombenrohr.png",
+    videoUrl: "https://www.youtube.com/watch?v=bAEMT2NAYqg",
   },
   {
     id: "04575",
@@ -338,6 +348,7 @@ const rawProducts: Product[] = [
     ],
     heightMeters: 40,
     image: null,
+    videoUrl: "https://www.youtube.com/watch?v=Lv5dSdTN5ws&t=1s",
   },
   {
     id: "04589",
@@ -360,6 +371,7 @@ const rawProducts: Product[] = [
     durationSeconds: 90,
     heightMeters: 4,
     image: null,
+    videoUrl: "https://www.youtube.com/watch?v=YprzY18GLXQ",
   },
   {
     id: "04595",
@@ -381,6 +393,7 @@ const rawProducts: Product[] = [
     durationSeconds: 200,
     heightMeters: 4,
     image: "/products/04595_infinity-paradox.png",
+    videoUrl: "https://www.youtube.com/watch?v=ALR2H_dH00c&t=1s",
   },
   {
     id: "04817",
@@ -394,6 +407,7 @@ const rawProducts: Product[] = [
       "9-teiliges Raketensortiment mit bunten Sternen und Glitzereffekten.",
     features: ["9-teilig", "bunte Sterne", "Glitzereffekte"],
     image: "/products/04817_volltreffer.png",
+    videoUrl: "https://www.youtube.com/watch?v=3f_6XS-4KJA",
   },
   {
     id: "02390",
@@ -414,6 +428,7 @@ const rawProducts: Product[] = [
     ],
     heightMeters: 60,
     image: "/products/02390_rocket-strike.png",
+    videoUrl: "https://youtu.be/L2Utvh1sakQ",
   },
   {
     id: "54076",
@@ -478,6 +493,7 @@ const rawProducts: Product[] = [
       "Schachtel mit 50 Schwarzpulver-Piraten-Krachern.",
     features: ["50 Stück", "Schwarzpulver-Piraten-Kracher"],
     image: "/products/01115_stoertebeker.png",
+    videoUrl: "https://youtu.be/LU4ypLwU-Zk",
   },
   {
     id: "04617",
@@ -536,6 +552,7 @@ const rawProducts: Product[] = [
       "ab 12 Jahren",
     ],
     image: "/products/07870_bengalfeuer.png",
+    videoUrl: "https://www.youtube.com/watch?v=WUuX1k4hesI",
   },
 ];
 

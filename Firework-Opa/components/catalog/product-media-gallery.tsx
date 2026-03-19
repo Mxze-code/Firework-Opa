@@ -18,13 +18,43 @@ function getYouTubeEmbedUrl(url: string): string | null {
     const parsed = new URL(url);
     const host = parsed.hostname.replace("www.", "");
 
+    const parseYouTubeStartSeconds = (raw: string | null): number | null => {
+      if (!raw) return null;
+      const v = raw.trim().toLowerCase();
+      if (!v) return null;
+
+      // Accept plain seconds: "90"
+      if (/^\d+$/.test(v)) return Number(v);
+
+      // Accept "1s", "2m", "1h2m3s", "1m30s"
+      const re =
+        /^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i;
+      const m = v.match(re);
+      if (!m) return null;
+      const h = m[1] ? Number(m[1]) : 0;
+      const mnt = m[2] ? Number(m[2]) : 0;
+      const s = m[3] ? Number(m[3]) : 0;
+      const total = h * 3600 + mnt * 60 + s;
+      return Number.isFinite(total) ? total : null;
+    };
+
+    const getStartFromParams = (): number | null => {
+      // YouTube commonly uses `t=` or `start=`.
+      const t = parsed.searchParams.get("t");
+      const start = parsed.searchParams.get("start");
+      return parseYouTubeStartSeconds(start ?? t);
+    };
+
+    const startSeconds = getStartFromParams();
+    const startParam = startSeconds != null ? `?start=${startSeconds}` : "";
+
     if (host === "youtube.com" || host === "m.youtube.com") {
       const id = parsed.searchParams.get("v");
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+      return id ? `https://www.youtube.com/embed/${id}${startParam}` : null;
     }
     if (host === "youtu.be") {
       const id = parsed.pathname.replace("/", "");
-      return id ? `https://www.youtube.com/embed/${id}` : null;
+      return id ? `https://www.youtube.com/embed/${id}${startParam}` : null;
     }
   } catch {
     return null;

@@ -11,7 +11,12 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="group flex flex-col rounded border border-[#2d3a4d] bg-[#1a2332] transition-all duration-300 ease-out hover:border-[#c9a227]/40 hover:bg-[#243044] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:-translate-y-1">
       <Link href={`/katalog/${product.slug}`} className="flex flex-1 flex-col">
-        <div className="h-56 w-full rounded-t border-b border-[#2d3a4d] bg-[#f8fafc] p-4 md:h-60 md:p-5">
+        <div className="relative h-56 w-full rounded-t border-b border-[#2d3a4d] bg-[#f8fafc] p-4 md:h-60 md:p-5">
+          {product.videoUrl && (
+            <span className="absolute right-3 top-3 z-10 rounded border border-[#c9a227]/40 bg-[#0f1419]/75 px-2 py-1 text-[11px] font-semibold text-[#f0f4f8]">
+              Video
+            </span>
+          )}
           {product.image ? (
             <img
               src={product.image}
