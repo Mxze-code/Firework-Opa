@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { ProductImagePlaceholder } from "./product-image-placeholder";
 
 type ProductMediaGalleryProps = {
@@ -114,9 +115,12 @@ export function ProductMediaGallery({
       <div className="relative h-[22rem] w-full rounded border border-[#dbe3ec] bg-[#f8fafc] p-5 md:h-[28rem] md:p-8">
         {active.type === "image" ? (
           active.src ? (
-            <img
+            <Image
               src={active.src}
               alt={active.alt}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              priority={activeIndex === 0}
               className="h-full w-full object-contain object-center"
             />
           ) : (

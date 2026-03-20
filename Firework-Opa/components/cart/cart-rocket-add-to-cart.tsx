@@ -201,6 +201,8 @@ export function CartRocketAddToCart() {
               We keep a placeholder ref so the JS doesn't crash. */}
         </svg>
 
+        {/* Animated logo uses a plain <img> to support ref + dynamic src updates. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           ref={rocketImgRef}
           alt=""

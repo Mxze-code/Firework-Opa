@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import type { CartItem } from "@/lib/cart-context";
 import { ProductImagePlaceholder } from "@/components/catalog/product-image-placeholder";
 
@@ -21,11 +22,13 @@ export function CartItemRow({
 
   return (
     <div className="flex gap-6 border-b border-[#2d3a4d] py-6 last:border-0">
-      <div className="h-24 w-24 shrink-0 overflow-hidden rounded border border-[#2d3a4d]">
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded border border-[#2d3a4d]">
         {product.image ? (
-          <img
+          <Image
             src={product.image}
             alt={product.name}
+            fill
+            sizes="96px"
             className="h-full w-full object-cover"
           />
         ) : (

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
@@ -128,7 +129,7 @@ export function Navbar() {
           href="/"
           className="flex items-center shrink-0 animate-logo-float transition-transform duration-300 hover:scale-[1.01]"
         >
-          <img
+          <Image
             src={logoSrc}
             alt="Hartmann UG & Co. KG"
             data-hartmann-logo

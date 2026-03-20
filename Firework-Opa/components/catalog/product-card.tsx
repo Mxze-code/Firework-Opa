@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/lib/products";
 import { ProductImagePlaceholder } from "./product-image-placeholder";
 import { AddToCartButton } from "./add-to-cart-button";
@@ -24,9 +25,11 @@ export function ProductCard({ product }: ProductCardProps) {
         >
           <div className="relative h-56 w-full md:h-60">
             {product.image ? (
-              <img
+              <Image
                 src={product.image}
                 alt={product.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 320px"
                 className="h-full w-full object-contain object-center transition group-hover:opacity-95"
               />
             ) : (
