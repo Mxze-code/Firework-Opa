@@ -58,14 +58,33 @@ export function AddToCartButton({
         // ignore: vibration is an enhancement
       }
 
-      // Gleiches Feedback wie früher: Logo fliegt zum Warenkorb (auch mobil).
-      window.dispatchEvent(
-        new CustomEvent("cart:rocket-add", {
-          detail: {
-            productId: product.id,
-          },
-        })
-      );
+      // Mobile: Fullscreen-Feuerwerk auslösen, damit der Nutzer Feedback sieht.
+      // Desktop: Raketenflug zum Warenkorb.
+      if (isMobile) {
+        const cartEl = document.querySelector(
+          "[data-cart-icon]"
+        ) as HTMLElement | null;
+        const rect = cartEl?.getBoundingClientRect();
+
+        const originX =
+          rect != null ? rect.left + rect.width / 2 : window.innerWidth / 2;
+        const originY =
+          rect != null ? rect.top + rect.height / 2 : window.innerHeight / 2;
+
+        window.dispatchEvent(
+          new CustomEvent("cart:burst", {
+            detail: { originX, originY },
+          })
+        );
+      } else {
+        window.dispatchEvent(
+          new CustomEvent("cart:rocket-add", {
+            detail: {
+              productId: product.id,
+            },
+          })
+        );
+      }
     },
     [addItem, product, quantity]
   );
