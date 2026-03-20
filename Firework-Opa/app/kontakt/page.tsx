@@ -11,14 +11,14 @@ export default function KontaktPage() {
           Kontakt / Über mich
         </h1>
         <div className="mt-10 grid gap-10 lg:grid-cols-1 lg:items-start">
-          <div className="mx-auto w-full max-w-[640px] h-full">
-            <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
+          <div className="mx-auto w-full max-w-[860px] h-full">
+            <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-8">
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-[#64748b]">
                 Über mich
               </p>
 
-              <div className="mt-5 flex items-stretch gap-8">
-                <div className="relative w-[180px] sm:w-[200px] md:w-[220px] flex-shrink-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55">
+              <div className="mt-5 flex items-stretch gap-10">
+                <div className="relative w-[220px] sm:w-[240px] md:w-[260px] flex-shrink-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55">
                   <Image
                     src={`${basePath}/ueber-mich.png?v=${ueberMichVersion}`}
                     alt="Portraitbild Über mich"
@@ -28,7 +28,7 @@ export default function KontaktPage() {
                   />
                 </div>
 
-                <p className="flex-1 text-base leading-7 text-[#94a3b8]">
+                <p className="flex-1 text-lg leading-8 text-[#94a3b8]">
                   Mein Name ist Hubert Hartmann. Seit Jahrzehnten verkaufe
                   ich Schreibwaren, Feuerwerk und vermiete Wohnungen, etwa
                   Garagen oder Stellplätze. Ehemals war ich Chef der Firma
@@ -39,11 +39,11 @@ export default function KontaktPage() {
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-[640px] rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
+          <div className="mx-auto w-full max-w-[860px] rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-8">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-[#64748b]">
               Ansprechpartner
             </p>
-            <p className="mt-3 text-xl font-semibold text-[#f0f4f8]">
+            <p className="mt-3 text-2xl font-semibold text-[#f0f4f8]">
               Hartmann UG &amp; Co. KG
             </p>
 
