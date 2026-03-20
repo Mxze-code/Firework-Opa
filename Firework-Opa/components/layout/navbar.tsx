@@ -34,9 +34,12 @@ export function Navbar() {
   const lastScrollYRef = useRef(0);
 
   const [burstParticles, setBurstParticles] = useState<CartParticle[] | null>(null);
+  const [burstOrigin, setBurstOrigin] = useState<{ x: number; y: number } | null>(
+    null
+  );
   const burstTimeoutRef = useRef<number | null>(null);
 
-  const triggerCartBurst = useCallback(() => {
+  const triggerCartBurst = useCallback((originX?: number, originY?: number) => {
     if (typeof window === "undefined") return;
     if (burstTimeoutRef.current != null) {
       window.clearTimeout(burstTimeoutRef.current);
@@ -47,6 +50,12 @@ export function Navbar() {
     if (reduceMotion) return;
 
     const colors = ["#f8fafc", "#c9a227", "#d4b03a"];
+    const x =
+      typeof originX === "number" ? originX : window.innerWidth / 2;
+    const y =
+      typeof originY === "number" ? originY : window.innerHeight / 2;
+
+    setBurstOrigin({ x, y });
     const count = 10;
     const maxDist = 22; // klein & edel, aber spürbar
 
@@ -104,7 +113,13 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const handler = () => triggerCartBurst();
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<any>).detail ?? {};
+      // Verhindert doppeltes Auslösen, wenn wir den Burst direkt beim Cart-Icon
+      // auslösen (dann rufen wir triggerCartBurst selbst schon).
+      if (detail?.source === "nav-cart") return;
+      triggerCartBurst(detail?.originX, detail?.originY);
+    };
     window.addEventListener("cart:burst", handler);
     return () => window.removeEventListener("cart:burst", handler);
   }, [triggerCartBurst]);
@@ -152,7 +167,19 @@ export function Navbar() {
           <div className="ml-4 h-6 w-px bg-[#2d3a4d]" aria-hidden />
           <Link
             href="/warenkorb"
-            onClick={() => triggerCartBurst()}
+            onClick={(e) => {
+              const x = (e as any)?.clientX ?? window.innerWidth / 2;
+              const y = (e as any)?.clientY ?? window.innerHeight / 2;
+              triggerCartBurst(x, y);
+
+              // Mobile: CartScreenBurst nutzt dieses Event, um die Vollbild-Feuerwerke
+              // exakt am Klickpunkt darzustellen.
+              window.dispatchEvent(
+                new CustomEvent("cart:burst", {
+                  detail: { originX: x, originY: y, source: "nav-cart" },
+                })
+              );
+            }}
             className="relative flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[#94a3b8] hover:text-[#f0f4f8] hover:bg-white/5 rounded transition"
             aria-label="Warenkorb"
             data-cart-icon
@@ -176,27 +203,7 @@ export function Navbar() {
                 />
               </svg>
 
-              {burstParticles && (
-                <div className="pointer-events-none absolute inset-0 z-0">
-                  {burstParticles.map((p, idx) => (
-                    <span
-                      key={idx}
-                      className="cart-particle"
-                      style={
-                        {
-                          ["--dx" as any]: `${p.dx}px`,
-                          ["--dy" as any]: `${p.dy}px`,
-                          ["--w" as any]: `${p.w}px`,
-                          ["--h" as any]: `${p.h}px`,
-                          ["--rot" as any]: `${p.rot}deg`,
-                          ["--c" as any]: p.color,
-                          ["--delay" as any]: `${p.delay}ms`,
-                        } as CSSProperties
-                      }
-                    />
-                  ))}
-                </div>
-              )}
+              {/* Partikel werden unten als globales Overlay gerendert */}
             </span>
             {totalItems > 0 && (
               <span className="absolute -right-1 -top-1 z-10 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#c9a227] px-1.5 text-xs font-semibold text-[#0f1419]">
@@ -205,6 +212,35 @@ export function Navbar() {
             )}
           </Link>
         </nav>
+
+        {burstParticles && burstOrigin && (
+          <div
+            className="pointer-events-none fixed relative z-[75]"
+            style={{
+              left: burstOrigin.x,
+              top: burstOrigin.y,
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            {burstParticles.map((p, idx) => (
+              <span
+                key={idx}
+                className="cart-particle"
+                style={
+                  {
+                    ["--dx" as any]: `${p.dx}px`,
+                    ["--dy" as any]: `${p.dy}px`,
+                    ["--w" as any]: `${p.w}px`,
+                    ["--h" as any]: `${p.h}px`,
+                    ["--rot" as any]: `${p.rot}deg`,
+                    ["--c" as any]: p.color,
+                    ["--delay" as any]: `${p.delay}ms`,
+                  } as CSSProperties
+                }
+              />
+            ))}
+          </div>
+        )}
 
         <button
           type="button"
