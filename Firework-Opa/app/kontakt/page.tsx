@@ -40,15 +40,15 @@ export default function KontaktPage() {
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-[1120px] rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-12">
+          <div className="mx-auto w-full max-w-[960px] rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-10">
             <p className="text-base font-medium uppercase tracking-[0.2em] text-[#64748b]">
               Ansprechpartner
             </p>
-            <p className="mt-3 text-4xl md:text-5xl font-semibold text-[#f0f4f8]">
+            <p className="mt-3 text-3xl md:text-4xl font-semibold text-[#f0f4f8]">
               Hartmann UG &amp; Co. KG
             </p>
 
-            <div className="mt-6 space-y-4 text-[#94a3b8] text-base sm:text-lg md:text-xl">
+            <div className="mt-6 space-y-4 text-[#94a3b8] text-base sm:text-lg">
               <p>Badergasse 55</p>
               <p>96472 Rödental</p>
               <p className="pt-2">Tel. 09563 4896</p>
