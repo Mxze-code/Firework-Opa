@@ -30,11 +30,13 @@ export default function KontaktPage() {
                 </div>
 
                 <p className="flex-1 text-base sm:text-lg md:text-lg lg:text-xl leading-7 md:leading-8 lg:leading-9 text-[#94a3b8]">
-                  Mein Name ist Hubert Hartmann. Seit Jahrzehnten verkaufe
-                  ich Schreibwaren, Feuerwerk und vermiete Wohnungen, etwa
-                  Garagen oder Stellplätze. Ehemals war ich Chef der Firma
-                  Hartmann, heute mache ich das Ganze vor allem im Hobby.
-                  Kontaktieren Sie mich gerne bei Interesse.
+                  Mein Name ist Hubert Hartmann. Seit vielen Jahren bin ich
+                  im Verkauf von Schreibwaren und Feuerwerk tätig und
+                  vermiete zudem Wohnungen sowie Garagen und Stellplätze.
+                  Früher war ich Inhaber der Firma Hartmann, heute betreibe
+                  ich diese Tätigkeiten vor allem aus persönlicher Freude und
+                  mit viel Erfahrung. Bei Interesse freue ich mich über Ihre
+                  Kontaktaufnahme.
                 </p>
               </div>
             </div>
