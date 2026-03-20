@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const ueberMichVersion = "20260320-3";
 
 export default function KontaktPage() {
   return (
@@ -36,7 +37,7 @@ export default function KontaktPage() {
 
               <div className="relative mt-5 flex-1 min-h-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55">
                 <Image
-                  src={`${basePath}/ueber-mich.png`}
+                  src={`${basePath}/ueber-mich.png?v=${ueberMichVersion}`}
                   alt="Portraitbild Über mich"
                   fill
                   className="object-cover object-[50%_35%]"
