@@ -34,6 +34,14 @@ export function Navbar() {
   const isHome = pathname === "/";
   const lastScrollYRef = useRef(0);
 
+  // When cart animation triggers while the navbar is hidden (scrolled down),
+  // we temporarily keep it visible so the rocket starts within the visible
+  // header area.
+  const navLockUntilRef = useRef<number>(0);
+  const [forceNavInstant, setForceNavInstant] = useState(false);
+  const forceNavTimeoutRef = useRef<number | null>(null);
+  const rocketDispatchTimeoutRef = useRef<number | null>(null);
+
   const [burstParticles, setBurstParticles] = useState<CartParticle[] | null>(null);
   const burstTimeoutRef = useRef<number | null>(null);
 
@@ -90,6 +98,15 @@ export function Navbar() {
         return;
       }
 
+      // Während einer erzwungenen Anzeige (Cart-Rakete) nicht wieder
+      // ausblenden, damit die Animation nicht außerhalb des sichtbaren
+      // Bereichs startet.
+      if (Date.now() < navLockUntilRef.current) {
+        setIsNavVisible(true);
+        lastScrollYRef.current = currentY;
+        return;
+      }
+
       const delta = currentY - lastScrollYRef.current;
       // Kleine Scroll-Jitter ignorieren.
       if (Math.abs(delta) < 6) return;
@@ -110,11 +127,58 @@ export function Navbar() {
     return () => window.removeEventListener("cart:burst", handler);
   }, [triggerCartBurst]);
 
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ productId?: string }>).detail ?? {};
+
+      setIsNavVisible(true);
+      setForceNavInstant(true);
+      navLockUntilRef.current = Date.now() + 1200;
+
+      if (forceNavTimeoutRef.current != null) {
+        window.clearTimeout(forceNavTimeoutRef.current);
+      }
+      forceNavTimeoutRef.current = window.setTimeout(() => {
+        setForceNavInstant(false);
+      }, 350);
+
+      if (rocketDispatchTimeoutRef.current != null) {
+        window.clearTimeout(rocketDispatchTimeoutRef.current);
+      }
+
+      // Warten bis Navbar sichtbar ist, dann erst die Rocket-Animation starten.
+      // transition-none sorgt dafür, dass das sichtbar ist ohne lange Wartezeit.
+      rocketDispatchTimeoutRef.current = window.setTimeout(() => {
+        window.dispatchEvent(
+          new CustomEvent("cart:rocket-add", {
+            detail: { productId: detail.productId },
+          })
+        );
+      }, 60);
+    };
+
+    window.addEventListener(
+      "cart:nav-show-and-rocket",
+      handler as EventListener
+    );
+
+    return () => {
+      window.removeEventListener(
+        "cart:nav-show-and-rocket",
+        handler as EventListener
+      );
+      if (forceNavTimeoutRef.current != null)
+        window.clearTimeout(forceNavTimeoutRef.current);
+      if (rocketDispatchTimeoutRef.current != null)
+        window.clearTimeout(rocketDispatchTimeoutRef.current);
+    };
+  }, []);
+
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 will-change-transform ${
         isNavVisible ? "translate-y-0" : "-translate-y-full"
-      } ${
+      } ${forceNavInstant ? "transition-none" : ""} ${
         isHome
           ? scrolled
             ? "bg-transparent py-3"

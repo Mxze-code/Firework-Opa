@@ -77,13 +77,27 @@ export function AddToCartButton({
           })
         );
       } else {
-        window.dispatchEvent(
-          new CustomEvent("cart:rocket-add", {
-            detail: {
-              productId: product.id,
-            },
-          })
-        );
+        const pathname = window.location.pathname ?? "";
+        const onKatalogPage = pathname.startsWith("/katalog");
+
+        if (onKatalogPage) {
+          // Falls die Navbar durch Scroll gerade versteckt ist, soll sie kurz
+          // eingeblendet werden, bevor die Rakete startet (sonst startet sie
+          // außerhalb des sichtbaren Bereichs).
+          window.dispatchEvent(
+            new CustomEvent("cart:nav-show-and-rocket", {
+              detail: { productId: product.id },
+            })
+          );
+        } else {
+          window.dispatchEvent(
+            new CustomEvent("cart:rocket-add", {
+              detail: {
+                productId: product.id,
+              },
+            })
+          );
+        }
       }
     },
     [addItem, product, quantity]
