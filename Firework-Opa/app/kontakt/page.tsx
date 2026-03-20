@@ -23,7 +23,8 @@ export default function KontaktPage() {
                     src={`${basePath}/ueber-mich.png?v=${ueberMichVersion}`}
                     alt="Portraitbild Über mich"
                     fill
-                    className="object-cover object-[50%_35%]"
+                    // Kopf nicht abschneiden: Bildfokus etwas weiter nach oben verschieben.
+                    className="object-cover object-[50%_20%]"
                     priority
                   />
                 </div>
