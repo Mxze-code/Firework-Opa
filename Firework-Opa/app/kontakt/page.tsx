@@ -17,14 +17,14 @@ export default function KontaktPage() {
                 Über mich
               </p>
 
-              <div className="mt-6 flex items-stretch gap-16">
-                <div className="relative w-[260px] sm:w-[300px] md:w-[360px] flex-shrink-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55">
+              <div className="mt-6 flex items-start gap-16">
+                <div className="relative w-[260px] sm:w-[300px] md:w-[360px] flex-shrink-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55 aspect-[941/1024]">
                   <Image
                     src={`${basePath}/ueber-mich.png?v=${ueberMichVersion}`}
                     alt="Portraitbild Über mich"
                     fill
-                    // Kopf nicht abschneiden: Bildfokus etwas weiter nach oben verschieben.
-                    className="object-cover object-[50%_20%]"
+                    // Komplettes, hochkantiges Foto anzeigen (kein Cropping).
+                    className="object-contain object-center"
                     priority
                   />
                 </div>
