@@ -10,8 +10,36 @@ export default function KontaktPage() {
         <h1 className="font-heading text-3xl font-bold text-[#f0f4f8] md:text-4xl">
           Kontakt / Über mich
         </h1>
-        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-stretch">
-          <div className="rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
+        <div className="mt-10 grid gap-10 lg:grid-cols-1 lg:items-start">
+          <div className="mx-auto w-full max-w-[560px] h-full">
+            <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#64748b]">
+                Über mich
+              </p>
+
+              <div className="mt-5 flex items-stretch gap-6">
+                <div className="relative w-[160px] flex-shrink-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55">
+                  <Image
+                    src={`${basePath}/ueber-mich.png?v=${ueberMichVersion}`}
+                    alt="Portraitbild Über mich"
+                    fill
+                    className="object-cover object-[50%_35%]"
+                    priority
+                  />
+                </div>
+
+                <p className="flex-1 text-sm leading-relaxed text-[#94a3b8]">
+                  Mein Name ist Hubert Hartmann. Seit Jahrzehnten verkaufe
+                  ich Schreibwaren, Feuerwerk und vermiete Wohnungen, etwa
+                  Garagen oder Stellplätze. Ehemals war ich Chef der Firma
+                  Hartmann, heute mache ich das Ganze vor allem im Hobby.
+                  Kontaktieren Sie mich gerne bei Interesse.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto w-full max-w-[560px] rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
             <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#64748b]">
               Ansprechpartner
             </p>
@@ -26,32 +54,6 @@ export default function KontaktPage() {
               <p>Fax 09563 729 3325</p>
               <p>Mobil 0172 8616347</p>
               <p className="pt-3 text-sm">Handelsregister Coburg HRA 4727</p>
-            </div>
-          </div>
-
-          <div className="mx-auto w-full max-w-[320px] h-full">
-            <div className="flex h-full flex-col rounded border border-[#2d3a4d] bg-[#0f1419]/35 p-6 md:p-7">
-              <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#64748b]">
-                Über mich
-              </p>
-
-              <div className="relative mt-5 flex-1 min-h-0 overflow-hidden rounded border border-[#2d3a4d] bg-[#0f1419]/55">
-                <Image
-                  src={`${basePath}/ueber-mich.png?v=${ueberMichVersion}`}
-                  alt="Portraitbild Über mich"
-                  fill
-                  className="object-cover object-[50%_35%]"
-                  priority
-                />
-              </div>
-
-              <p className="mt-4 text-sm leading-relaxed text-[#94a3b8]">
-                Mein Name ist Hubert Hartmann. Seit Jahrzehnten verkaufe ich
-                Schreibwaren, Feuerwerk und vermiete Wohnungen, etwa Garagen
-                oder Stellplätze. Ehemals war ich Chef der Firma Hartmann,
-                heute mache ich das Ganze vor allem im Hobby. Kontaktieren
-                Sie mich gerne bei Interesse.
-              </p>
             </div>
           </div>
         </div>
