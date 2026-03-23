@@ -7,3 +7,6 @@ Projects/lifeflow/node_modules/
 
 # OS
 .DS_Store
+
+# Nested project (separate Git repo)
+Marcatis/

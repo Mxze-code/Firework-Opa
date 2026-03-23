@@ -25,14 +25,14 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: Marcatis/package-lock.json
+          cache-dependency-path: Firework-Opa/package-lock.json
 
       - name: Install dependencies
-        working-directory: Marcatis
+        working-directory: Firework-Opa
         run: npm ci
 
       - name: Build static export
-        working-directory: Marcatis
+        working-directory: Firework-Opa
         env:
           GITHUB_PAGES_EXPORT: "true"
           # Muss mit GitHub-Pages-URL übereinstimmen; wird ins Client-Bundle inlined (öffentliche Bildpfade).
@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: Marcatis/out
+          path: Firework-Opa/out
 
       - name: Deploy to GitHub Pages
         id: deployment
