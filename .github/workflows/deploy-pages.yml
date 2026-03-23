@@ -35,6 +35,8 @@ jobs:
         working-directory: Marcatis
         env:
           GITHUB_PAGES_EXPORT: "true"
+          # Muss mit GitHub-Pages-URL übereinstimmen; wird ins Client-Bundle inlined (öffentliche Bildpfade).
+          NEXT_PUBLIC_BASE_PATH: "/${{ github.event.repository.name }}"
         run: npm run build
 
       - name: Setup Pages

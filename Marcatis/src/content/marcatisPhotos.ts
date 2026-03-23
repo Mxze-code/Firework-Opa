@@ -4,8 +4,14 @@
  *
  * `imageObjectClass` / `objectPositionMobile`: vollständige Tailwind-Klassen (inkl. `object-cover`
  * und `md:`), damit JIT die Utilities zuverlässig erzeugt. Optional `mobileSrc` am Hero: eigenes Phone-Asset.
+ *
+ * Pfade müssen `basePath` enthalten (z. B. GitHub Pages `/Repo/...`), sonst zeigen `next/image`-URLs
+ * auf die Domain-Root und laden nicht.
  */
-const p = (name: string) => `/photos/marcatis/${name}`;
+import { resolvedStaticBasePath } from "@/lib/staticExportBasePath";
+
+const photoBase = `${resolvedStaticBasePath()}/photos/marcatis`;
+const p = (name: string) => `${photoBase}/${name}`;
 
 export const marcatisPhotos = {
   hero: {
