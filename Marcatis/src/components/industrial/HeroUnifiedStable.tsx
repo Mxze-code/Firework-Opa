@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { PublicFillImage } from "@/components/PublicFillImage";
 import { HeroHeadlineReveal } from "@/components/industrial/HeroHeadlineReveal";
 import { marcatisPhotos } from "@/content/marcatisPhotos";
 
@@ -19,35 +19,28 @@ export function HeroUnifiedStable() {
       <div className="relative z-0 h-[min(68svh,620px)] w-full shrink-0 overflow-hidden md:absolute md:inset-0 md:h-auto hero-min-h-desktop md:shrink">
         {useSplitAssets ? (
           <>
-            <Image
+            <PublicFillImage
               src={mobileSrc!}
               alt=""
-              fill
               priority
               sizes="100vw"
               className="object-cover object-center md:hidden"
-              quality={92}
-              aria-hidden
             />
-            <Image
+            <PublicFillImage
               src={hero.src}
               alt={hero.alt}
-              fill
               priority
               sizes="100vw"
               className={`hidden md:block ${hero.imageObjectClassDesktopOnly}`}
-              quality={92}
             />
           </>
         ) : (
-          <Image
+          <PublicFillImage
             src={hero.src}
             alt={hero.alt}
-            fill
             priority
             sizes="100vw"
             className={hero.imageObjectClass}
-            quality={92}
           />
         )}
 

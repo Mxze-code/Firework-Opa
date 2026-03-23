@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { PublicFillImage } from "@/components/PublicFillImage";
 import { useCallback, useId, useRef, useState } from "react";
 
 export type CarouselSlide = {
@@ -71,11 +71,10 @@ export function CapabilitiesPhotoCarousel({ slides }: Props) {
           if (d < -52) prev();
         }}
       >
-        <Image
+        <PublicFillImage
           key={current.src}
           src={current.src}
           alt={current.alt}
-          fill
           className={current.imageObjectClass}
           sizes="(max-width: 768px) 100vw, min(896px, 90vw)"
           priority={index === 0}
@@ -141,7 +140,7 @@ export function CapabilitiesPhotoCarousel({ slides }: Props) {
             aria-label={`${s.caption} anzeigen`}
             aria-current={i === index}
           >
-            <Image src={s.src} alt="" fill className="object-cover object-center" sizes="96px" />
+            <PublicFillImage src={s.src} alt="" className="object-cover object-center" sizes="96px" />
           </button>
         ))}
       </div>
