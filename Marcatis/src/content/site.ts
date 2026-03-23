@@ -1,8 +1,7 @@
-import { resolvedStaticBasePath } from "@/lib/staticExportBasePath";
-
 /** Inhalte aus dem Website-Inventar — strukturiert für die Marcatis Industrial Homepage. */
 
-const homeHash = (id: string) => `${resolvedStaticBasePath()}/#${id}`;
+/** Root-relative hash only — Next.js `Link` wendet `basePath` selbst an (kein doppeltes /Repo/Repo/). */
+const homeHash = (id: string) => `/#${id}`;
 
 export const company = {
   legalName: "Marcatis Laserbearbeitung GmbH",
