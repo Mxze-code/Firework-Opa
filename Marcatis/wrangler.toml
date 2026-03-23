@@ -1,0 +1,6 @@
+# Cloudflare Pages: Build-Ausgabe für Next.js `output: "export"` (statischer Export nach /out).
+# Build-Befehl im Dashboard: npm run build — Ausgabe-Verzeichnis: out
+# https://developers.cloudflare.com/pages/configuration/build-configuration/
+name = "marcatis"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "out"

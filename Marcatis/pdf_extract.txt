@@ -1,0 +1,255 @@
+--- PAGE 1 ---
+Seite 1
+MARCATIS
+Website Content Inventory & Rebuild Brief
+Arbeitsgrundlage für einen vollständigen Relaunch. Enthält die aktuelle
+Informationsarchitektur, alle sichtbaren Kerninhalte der Website, Themencluster, Pflichtinhalte
+und Hinweise, was im neuen Auftritt wieder erscheinen muss.
+Was dieses PDF leisten soll
+ Alle aktuell sichtbaren Kerninformationen der Website strukturiert sichern.
+ 
+ Texte, Themen und Seiten so ordnen, dass Cursor daraus einen deutlich moderneren Auftritt bauen kann.
+ 
+ Redesign ausdrücklich erlauben: Design, Layout und Nutzerführung dürfen komplett neu gedacht werden - die
+ inhaltlichen Aussagen sollen aber erhalten bleiben.
+ Rechtstexte und Pflichtangaben als eigene Migrationspunkte festhalten.
+ 
+Wichtige Anweisung für den Relaunch
+Nicht die alte Website nachbauen. Stattdessen dieselben Informationen in einer klaren, modernen, technisch
+hochwertigen und flüssig animierten Website neu inszenieren.
+1. Marke, Positionierung und Kernbotschaft
+ Marke/Unternehmen: MARCATIS Laserbearbeitung GmbH.
+ 
+ Standort: Zeppelinstraße 6, 63741 Aschaffenburg.
+ 
+ Kernthema: industrielle Laserbearbeitung.
+ 
+ Leistungsfokus auf drei Hauptverfahren: Laserbeschriftung, Laserfeinschneiden und 3D-Lasergravur.
+ 
+ Kernaussage der Startseite: Leidenschaft + Präzision + moderne Technologie + langjährige Erfahrung.
+ 
+ Die Seite spricht vor allem B2B-Anwendungen an, nennt aber im Footer auch 'Privat' als Branche/Zielgruppe.
+ 
+Aktuelle Hero-Botschaft (inhaltlich)
+ Leidenschaft für Lasertechnik seit mehr als 10 Jahren.
+ 
+ Hohe Präzision für unterschiedlichste Anwendungen.
+ 
+ Umsetzung von Projekten mit moderner Technologie und Erfahrung.
+ 
+ Materialbreite: Metall, Kunststoff und Spezialmaterialien.
+ 
+ Wiederkehrender primärer CTA: 'Jetzt kontaktieren'.
+ 
+2. Aktuelle Hauptnavigation / Informationsarchitektur
+ Startseite
+ 
+ 3D-Lasergravur
+ 
+ Allgemein
+ 
+ Beschichtungen
+ 
+ Kunststoffe
+ 
+--- PAGE 2 ---
+Seite 2
+ Laserbeschriftung
+ 
+ Lasergravur
+ 
+ Leistungen
+ 
+ Metalle
+ 
+ Verbundstoffe
+ 
+ Werkstoffe
+ 
+ Wissenswertes
+ 
+ Datenschutzerklärung
+ 
+ Impressum
+ 
+ Kontakt (im Header zusätzlich mit Telefonnummer)
+ 
+Relaunch-Empfehlung
+Im neuen Auftritt sollte daraus eine klarere IA entstehen: Start, Leistungen, Werkstoffe, Branchen/Beispiele,
+Wissenswertes/Insights, Über uns/Vertrauen, Kontakt sowie Rechtliches im Footer.
+3. Startseite: alle sichtbaren Inhaltsblöcke
+A. Hero
+ Logo, CTA und Doppelnennung der Hauptbotschaft 'Leidenschaft die sichtbar bleibt'.
+ 
+ Subheadline zur höchsten Präzision für jede Anwendung.
+ 
+ Einführungstext zur Lasertechnik, Erfahrung und Materialvielfalt.
+ 
+B. Drei Leistungsblöcke
+Bereich
+Inhalt / Aussagen
+Laserbeschriftung
+Dauerhafte, präzise und rückverfolgbare Kennzeichnung auf Metallen und Kunststoffen.
+Themen: Serienkennzeichnung, Typenschilder, Barcodes/Data-Matrix/QR, UDI,
+Lackabtrag.
+Laserfeinschneiden
+Präzise, gratfreie und materialschonende Schnitte in dünnen Materialien. Themen: filigrane
+Geometrien, enge Toleranzen, Dichtungen, Federn, Mikrobauteile, Kleinserien.
+3D-Lasergravur
+Tiefengenaue Gravuren auf gewölbten oder unregelmäßigen Oberflächen. Themen:
+Werkzeuge, Formeinsätze, Mikrostrukturen, Seriennummern auf gekrümmten Flächen.
+C. FAQ-Bereich
+ Welche Materialien bearbeitet MARCATIS? Genannt werden u. a. Edelstahl, Aluminium, Messing, Kupfer,
+ Kunststoffe wie ABS/POM/PA, Keramik, Glas, Graphit und Verbundstoffe.
+ Wie tief kann graviert werden? Aussage: bis zu mehreren Millimetern, abhängig von Material und Geometrie.
+ 
+ Ist Laserbeschriftung dauerhaft? Ja; abriebfest, temperatur- und chemikalienbeständig, geeignet für Industrie,
+ Medizintechnik und Automobilindustrie.
+ Warum 3D-Gravur / 3D-Abtrag? Als wirtschaftliche und technisch präzisere Alternative zu Schleifen oder Erodieren,
+ ohne Gefügeveränderung.
+ Welche Dateiformate werden benötigt? STEP, DXF, IGES, STL, PDF sowie AI/EPS/SVG für Logos/Gravuren.
+ 
+ Wie genau ist Laserfeinschneiden? Schnittspalte und Toleranzen im Mikrometerbereich, gratfreie Kanten.
+ 
+ Warum entlastet MARCATIS Unternehmen? Keine eigenen Maschinen, Ressourcen oder Mitarbeitenden für diese
+ Aufgaben nötig.
+ Wie läuft die Zusammenarbeit ab? Anforderungen senden, Machbarkeit prüfen, Angebot, Fertigung von Prototyp
+ bis Serie.
+ Integration in Produktionslinien? Ja, inklusive Schnittstellen zu MES/ERP.
+ 
+ Lieferzeiten? Muster und Kleinserien oft kurzfristig, Serien/komplexe Projekte mit abgestimmter Terminplanung.
+ 
+--- PAGE 3 ---
+Seite 3
+D. Nutzen-/Vertrauensblöcke 'Präzision erleben'
+ Entlastung - Aufgaben außerhalb des Kerngeschäfts auslagern.
+ 
+ Wirtschaftlich - Verweis auf ACSYS-Maschinen, Prozesssicherheit, Beschriftungsqualität und attraktive Preise.
+ 
+ Nachhaltigkeit - Ersatz umweltschädlicher Verfahren wie Ätzen oder Drucken.
+ 
+ Genauigkeit - wirtschaftlichere und präzisere Herstellung z. B. von Spannuten oder Elektroden.
+ 
+E. Kundenstimmen
+ Peter Kern, Kreisleiter Rotkreuz Jugendarbeit - Lob für lokale Partnerschaft, iPad-Beschriftung, Preise mit
+ Lasergravur und Beratung.
+ Fritz Kiener, Geschäftsführer Beeftec Grillgeräte - mehrjährige Zusammenarbeit, hohe Qualität, Liefertreue,
+ Know-how und Flexibilität.
+ Martin Lehr, Fertigungsleitung VaW GmbH - enge Zusammenarbeit, kurze Kommunikationswege, Transparenz,
+ Qualität bei Material/Preis/Logistik/Kundenbetreuung/Reklamationen.
+ Alexander Klotz, Inhaber Orange Production - Vertrauen, Klarheit, Zuverlässigkeit, fachliche Qualität und starke
+ Weiterempfehlung.
+F. Footer
+ Kontaktblock mit Firma, Telefonnummer, Adresse und E-Mail.
+ 
+ Branchenliste: Automobilindustrie, Werkzeugbau, Medizintechnik, Industrie, Privat.
+ 
+ Leistungsliste: Laserbeschriftung, QR/Matrix Code, Kennzeichnungen, Werbemittelgravur, Sonderanfertigungen.
+ 
+ Links zu Datenschutzerklärung und Impressum.
+ 
+4. Seiteninventar / Themencluster
+Seite/Kategorie
+Sichtbarer Inhalt heute
+3D-Lasergravur (Kategorie)
+Beiträge/Teaser zu Mikrolasergravur von Spanleitstufen, gekippten Höhenlinien,
+schneller & präziser Lasergravur, funktionalen Mikrostrukturen.
+Allgemein
+Referenzen/Beispiele wie Weißbeschriftung auf Hartmetallfräser, Laserbeschriftung auf
+Edelstahl, Hifi-Frontplatten, Frontplatten allgemein, Tiefenbeschriftung eines
+Edelstahlwinkels, Lasergravur auf gehärtetem Edelstahl.
+Beschichtungen
+Beitrag zu Lacken und Folien: gezielter Schichtabtrag bzw. Karbonisierung mit dem
+Laser.
+Kunststoffe
+Beiträge zu Laserbearbeitung von Kunststoffen, Lacken/Folien und Lackabtrag im
+Tag-Nacht-Design.
+Laserbeschriftung
+Beiträge u. a. zu Schwarzbeschriftung auf Edelstahl, langen Werkstücken,
+Anlassbeschriftung, Lacken/Folien und Lackabtrag.
+Lasergravur
+Teaser zu Mikrolasergravur von Spanleitstufen und 'gekippten Höhenlinien' / 3D-Effekt
+ohne Tiefengravur.
+Leistungen
+Teaser zu überlangen Teilen bzw. Bearbeitung von Langteilen.
+Metalle
+Teaser zu Mikrolasergravur, Schwarzbeschriftung auf Edelstahl und Anlassbeschriftung.
+Verbundstoffe
+Aktuell nur ein sichtbarer Teaser zur Mikrolasergravur von Spanleitstufen.
+Werkstoffe
+Aktuell keine Ergebnisse gefunden - sollte im Relaunch entweder sauber befüllt oder
+entfernt werden.
+Wissenswertes
+Mindestens zwei redaktionelle Artikel: Materialvielfalt in der Laserbeschriftung;
+Laserbeschriftung als moderne Kennzeichnungsmethode.
+
+--- PAGE 4 ---
+Seite 4
+5. Was im Relaunch inhaltlich erhalten bleiben muss
+ Unternehmensname, Standort und Kontaktangaben.
+ 
+ Die drei Kernleistungen: Laserbeschriftung, Laserfeinschneiden, 3D-Lasergravur.
+ 
+ Material- und Werkstoffkompetenz (Metalle, Kunststoffe, Spezialmaterialien, Verbundstoffe).
+ 
+ B2B-/Industrie-Positionierung mit Beispielen aus Serienfertigung, Medizintechnik, Maschinenbau, Werkzeugbau,
+ Automobilbereich.
+ Vorteile: Präzision, Dauerhaftigkeit, Rückverfolgbarkeit, gratfreie Schnitte, Wirtschaftlichkeit, Nachhaltigkeit,
+ Entlastung.
+ FAQ-Inhalte, zumindest in überarbeiteter Form.
+ 
+ Kundenstimmen und Vertrauenselemente.
+ 
+ Kontaktmöglichkeit / klarer Lead-CTA.
+ 
+ Rechtsseiten: Impressum und Datenschutzerklärung.
+ 
+6. Was neu und besser werden sollte
+ Klare visuelle Hierarchie statt doppelter/mehrfach wiederholter Inhaltsblöcke.
+ 
+ Moderne Laser-/Tech-Anmutung: dunkle Premium-Basis, präzise Motion, scharfe Typografie, starke Bild- und
+ Videoinszenierung.
+ Saubere Gruppierung der Leistungen; keine Dopplungen zwischen Startseite und Unterseiten.
+ 
+ Bessere Sprache: fachlich stark, klar, industriell, vertriebsorientiert.
+ 
+ Stärkerer Conversion-Pfad: Leistung verstehen -> Beispiele sehen -> Kontakt aufnehmen.
+ 
+ Redaktionelle Inhalte nur dort einsetzen, wo sie strategisch helfen; heutige Blog-/Kategorie-Struktur darf neu
+ geordnet werden.
+7. Pflichtangaben / Rechtliches
+ Impressum vorhanden.
+ 
+ Datenschutzerklärung vorhanden.
+ 
+ Im Impressum genannt: MARCATIS Laserbearbeitung GmbH, Telefon +49 6021 438 235 6, Mobil +49 160 977 332
+ 70, E-Mail info@marcatis.de.
+ Geschäftsführender Gesellschafter: Thomas Kimmel.
+ 
+ Steuer-Nr. 204/132/50855; USt-IdNr. DE 314 552 175; Handelsregister HRB 14376; Amtsgericht Aschaffenburg.
+ 
+Hinweis für den Relaunch
+Impressum und Datenschutz sollten inhaltlich juristisch korrekt übernommen oder vom Unternehmen aktualisiert
+werden. Das PDF dient hier nur als inhaltliche Inventarliste, nicht als Rechtsprüfung.
+8. Empfohlene neue Seitenstruktur für den Neuentwurf
+ Startseite - starker Hero, Kernleistungen, Branchen, Referenzen, CTA.
+ 
+ Leistungen - je Leistung eine klar aufgebaute Unterseite mit Verfahren, Vorteilen, Anwendungen, Medien.
+ 
+ Werkstoffe - Metalle, Kunststoffe, beschichtete Materialien, Verbundstoffe in sauberer Matrix oder Filtersystem.
+ 
+ Branchen & Beispiele - reale Anwendungsfälle und Referenzen.
+ 
+ Wissenswertes / Insights - ausgewählte Fachartikel, nicht als unübersichtliches Archiv.
+ 
+ Über MARCATIS / Vertrauen - Kompetenz, Maschinen, Prozesssicherheit, Nachhaltigkeit, Testimonials.
+ 
+ Kontakt - klare Anfrage, Telefonnummer, Adresse, Karten-/Standortmodul.
+ 
+ Footer - Rechtliches.
+ 
+--- PAGE 5 ---
+Seite 5
+Arbeitsregel für Cursor: Design und Interaktion komplett neu denken. Inhaltlich nichts Wichtiges verlieren.
+Alles Dopplungs-/Archivhafte darf reduziert, neu sortiert und modernisiert werden.
+
